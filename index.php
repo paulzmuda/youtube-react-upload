@@ -96,34 +96,91 @@ body {
   }
 }
 
-#upload_icon {
-font-size: 102px;
-color: #CCCCCC;
+#upload_icon,
+#signIn_User_Icon {
+  font-size: 102px;
+  color: #CCCCCC;
 }
-#upload_icon:hover {
-color: #E62117;
-cursor: pointer;
+#upload_icon:hover,
+#signIn_User_Icon:hover {
+  color: #E62117;
+  cursor: pointer;
 }
+#googleNotAuth {
+  cursor: pointer;
+}
+
+#account-image img {
+  -webkit-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  float: left;
+  height: 46px;
+  width: 46px;
+}
+
+#account-name {
+  color: #427fed;
+  font-size: 16px;
+  font-weight: bold;
+  padding-top: 3px;
+}
+
+
 </style>
 
 
 	<body>
 	<div class="container">
       <div class="header clearfix">
-        <nav>
+        <!-- <nav>
           <ul class="nav nav-pills pull-right">
             <li role="presentation" class="active"><a href="#">Home</a></li>
             <li role="presentation"><a href="#">Settings</a></li>
             <li role="presentation"><a href="#">Contact</a></li>
           </ul>
-        </nav>
-        <h3 class="text-muted">Youtube Client Upload - Beta</h3>
+        </nav> -->
+        <div id="userLoggedIn" class="pull-right">
+
+
+          <div class="btn-group">
+          	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style=" background: url(//ssl.gstatic.com/accounts/ui/arrow_right_1x.png) 308px center no-repeat;
+                                                                                                                                                    -webkit-background-size: 21px 21px;
+                                                                                                                                                    background-size: 21px 21px;
+                                                                                                                                                    border: 0;
+                                                                                                                                                    border-left: 4px solid transparent;
+                                                                                                                                                    cursor: pointer;
+                                                                                                                                                    display: block;
+                                                                                                                                                    height: 100%;
+                                                                                                                                                    outline: none;
+                                                                                                                                                    padding: 15px 20px;
+                                                                                                                                                    text-align: left;
+                                                                                                                                                    text-overflow: ellipsis;
+                                                                                                                                                    width: 100%;">
+                                                                                                                                                    <span id="account-image"></span>
+                                                                                                                                                    <span id="account-name"></span>
+                                                                                                                                                    <span id="account-email"></span>
+          	</button>
+        		<ul class="dropdown-menu">
+        			<li><a href="#">blah</a></li>
+        			<li>blah bla</li>
+        			<li><button id="signout-button" style="display: none;">Sign Out</button></li>
+        		</ul>
+          </div>
+
+        </div>
+
+        <h3 class="text-muted">Youtube Client Upload - Beta</h3><i class="material-icons">code</i>
+
       </div>
 
-      <div id="googleAuth">
+      <div id="googleNotAuth" class="jumbotron" style="display: none;">
         <!--Add buttons to initiate auth sequence and sign out-->
+        <i class="material-icons" id="signIn_User_Icon">account_circle</i>
+        <h4>Sign-in to google</h4>
+        <p style="font-size: 12px; font-weight: normal; color: #667;">Enable video uploads by authorizing youtube access</p>
         <button id="authorize-button" style="display: none;">Authorize</button>
-        <button id="signout-button" style="display: none;">Sign Out</button>
+
         <div id="test"></div>
       </div>
       <div id="dropView" class="jumbotron">
@@ -194,9 +251,10 @@ cursor: pointer;
       // Enter one or more authorization scopes. Refer to the documentation for
       // the API or https://developers.google.com/people/v1/how-tos/authorizing
       // for details.
-      var scopes = 'https://www.googleapis.com/auth/youtube';
-      var authorizeButton = document.getElementById('authorize-button');
+      var scopes = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/plus.login';
+      var authorizeButton = document.getElementById('googleNotAuth');
       var signoutButton = document.getElementById('signout-button');
+      var uploadDisplay = document.getElementById('dropView');
       function handleClientLoad() {
         // Load the API client and auth2 library
         gapi.load('client:auth2', initClient);
@@ -220,10 +278,12 @@ cursor: pointer;
         if (isSignedIn) {
           authorizeButton.style.display = 'none';
           signoutButton.style.display = 'block';
+          uploadDisplay.style.display = 'block';
           makeApiCall();
         } else {
           authorizeButton.style.display = 'block';
           signoutButton.style.display = 'none';
+          uploadDisplay.style.display = 'none';
         }
       }
       function handleAuthClick(event) {
@@ -244,36 +304,42 @@ cursor: pointer;
       //   });
       // }
       function makeApiCall() {
-        gapi.client.load('youtube', 'v3', function() {
+        // gapi.client.load('youtube', 'v3', function() {
+        //     console.log('youtube API loaded...');
+        //     var request = gapi.client.youtube.channels.list({
+        //         part: 'snippet',
+        //         mine: true
+        //     });
+        //     // Step 6: Execute the API request
+        //     request.execute(function(resp) {
+        //       console.log('do nothing here');
+        //     });
+        //   });
+
+          gapi.client.load('plus', 'v1', function() {
             console.log('youtube API loaded...');
-            var request = gapi.client.youtube.channels.list({
-
-                part: 'snippet',
-                mine: true
-
-            });
-            // Step 6: Execute the API request
-            request.execute(function(resp) {
-              // document.getElementById('vid').value = resp.items[1].id.videoId;
-              console.log('saved video id successfully');
+              gapi.client.plus.people.get( {'userId' : 'me'} ).execute(function(resp) {
+              // Shows profile information
+              // console.log(resp);
               var p = document.createElement('p');
+                var name = resp.displayName; // console.log(resp.items[0].snippet.title);
+                p.appendChild(document.createTextNode(name));
+              document.getElementById('account-name').appendChild(p);
+
               var img = new Image();
-
-              var name = resp.items[0].snippet.title;
-              console.log(resp.items[0].snippet.title);
-              p.appendChild(document.createTextNode('Uploading to Youtube as '+name));
-
-
-              var userThumb = resp.items[0].snippet.thumbnails.medium.url;
-              console.log(resp.items[0].snippet.thumbnails.medium.url);
-              img.src = resp.items[0].snippet.thumbnails.medium.url
-              p.appendChild(img);
-
-
-              document.getElementById('test').appendChild(p);
-
-
-            });
+                img.src = resp.image.url;
+              document.getElementById('account-image').appendChild(img);
+              })
+          });
+          gapi.client.load('oauth2', 'v2', function() {
+              // console.log('youtube API loaded again...');
+              gapi.client.oauth2.userinfo.get().execute(function(resp) {
+                // console.log(resp.email);
+                var p = document.createElement('p');
+                  var email = resp.email; // console.log(resp.items[0].snippet.title);
+                  p.appendChild(document.createTextNode(email));
+                document.getElementById('account-email').appendChild(p);
+              });
           });
       }
   </script>
