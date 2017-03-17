@@ -117,7 +117,7 @@ cursor: pointer;
             <li role="presentation"><a href="#">Contact</a></li>
           </ul>
         </nav>
-        <h3 class="text-muted">Youtube Uploader - Javascript API</h3>
+        <h3 class="text-muted">Youtube Client Upload - Beta</h3>
       </div>
 
       <div id="googleAuth">
