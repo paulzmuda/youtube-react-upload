@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## YouTube Upload Client using Dropzone.js and Google API v3 (Javascript)
 
 You can use the [editor on GitHub](https://github.com/paulzmuda/youtube-client/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
