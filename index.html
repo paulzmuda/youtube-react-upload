@@ -90,15 +90,16 @@ body {
   .header {
     margin-bottom: 30px;
   }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
-  }
+
+.jumbotron {
+  margin: 0px;
+  border-bottom: 0;
+}
 }
 
 #upload_icon,
 #signIn_User_Icon {
-  font-size: 102px;
+  font-size: 125px;
   color: #CCCCCC;
 }
 #upload_icon:hover,
@@ -136,6 +137,47 @@ body {
   white-space: nowrap;
 }
 
+#privacyChosen {
+  border-color: #d3d3d3;
+  background: #f8f8f8;
+  color: #333;
+  border-radius:0px !important;
+  font-weight:500;
+  font-size:11px;
+  line-height: normal;
+}
+
+
+.dropdown .dropdown-menu li a:hover {
+  background-image: none;
+  background-color: #333;
+  color: #fff;
+}
+.dropdown .dropdown-menu li a {
+  display: block;
+  margin: 0;
+  padding: 0 25px;
+  color: #333;
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  line-height: 25px;
+  cursor: pointer;
+}
+
+#dropView .dropdown .dropdown-menu {
+  outline: none;
+  padding: 8px 0;
+  position: absolute;
+  border: 1px solid #ccc;
+  z-index: 2147483647;
+  overflow: auto;
+  background: #fff;
+  border-radius: 2px;
+  margin-top: -1px;
+  min-width: 0px;
+}
 
 </style>
 
@@ -199,24 +241,23 @@ body {
       </div>
       <div id="dropView" class="jumbotron">
       	<i class="material-icons" id="upload_icon">cloud_upload</i>
-        <h4>Select files to upload</h4>
-        <p style="font-size: 12px; font-weight: normal; color: #667;">Or drag and drop video files</p>
+        <h4 style="margin-top: 0px;">Select files to upload</h4>
+        <p style="font-size: 14px; font-weight: normal; color: #667;">Or drag and drop video files</p>
         <!-- <p><a class="btn btn-lg btn-success" href="#" role="button">Sign up today</a></p> -->
 
 
-        <div class="btn-group">
-        	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-color: #d3d3d3;
-                                                                                                                                                  background: #f8f8f8;
-                                                                                                                                                  color: #333;
-                                                                                                                                                  border-radius:0px !important;
-                                                                                                                                                  font-size:11px;
-                                                                                                                                                  font-weight:500;
-                                                                                                                                                  line-height: normal;">Public <span class="caret"></span>
+        <div class="dropdown btn-group">
+        	<button type="button" id="privacyChosen" class="btn btn-default dropdown-toggle"
+                                                   data-toggle="dropdown"
+                                                   aria-haspopup="true"
+                                                   aria-expanded="false"
+                                                   value="Public">Public <span class="caret"></span>
         	</button>
-      		<ul class="dropdown-menu">
+      		<ul class="dropdown-menu" aria-labelledby="privacyChosen">
       			<li><a href="#">Public</a></li>
       			<li><a href="#">Unlisted</a></li>
       			<li><a href="#">Private</a></li>
+            <li><a href="#">Scheduled</a></li>
       		</ul>
         </div>
 
@@ -405,6 +446,14 @@ body {
   			// hand-off file to google api
   		}
   	});
+
+// get value of dropdown // $('#privacyChosen').val();
+$(function(){
+  $(".dropdown-menu li a").click(function(){
+     $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+     $(this).parents(".dropdown").find('.btn').val($(this).text());
+  });
+});
 	</script>
 
 
