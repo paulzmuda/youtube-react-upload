@@ -32,6 +32,13 @@ For more details see [GitHub Flavored Markdown](https://guides.github.com/featur
 
 Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/paulzmuda/youtube-client/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
 
+## Why use this take on the YouTube API?
+
+The reason I originally had to create this was because I had to manage video uploads to a high traffic website with large video files. The server only had 1 gigabyte of memory which is what most low-cost hosts provide, and trying to upload videos larger than 300mb was causing the server to overload it's memory resources and crash.
+- as;dlfkja
+- asdfakljsdf
+
+
 ### Support or Contact
 
 Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
