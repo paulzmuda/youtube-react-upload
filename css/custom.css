@@ -1,0 +1,196 @@
+/* Space out content a bit */
+body {
+background: #f1f1f1;
+padding-top: 20px;
+padding-bottom: 20px;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+padding-right: 15px;
+padding-left: 15px;
+}
+
+/* Custom page header */
+.header {
+padding-bottom: 20px;
+border-bottom: 1px solid #e5e5e5;
+}
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+margin-top: 0;
+margin-bottom: 0;
+line-height: 40px;
+}
+
+/* Custom page footer */
+.footer {
+padding-top: 19px;
+color: #777;
+border-top: 1px solid #e5e5e5;
+}
+
+/* Customize container */
+@media (min-width: 768px) {
+.container {
+  max-width: 730px;
+}
+}
+.container-narrow > hr {
+margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+text-align: center;
+border-bottom: 1px solid #e5e5e5;
+background-color: #FFF;
+border-radius: 0px !important;
+}
+/*.jumbotron .btn {
+padding: 14px 24px;
+font-size: 21px;
+}*/
+
+/* Supporting marketing content */
+.marketing {
+margin: 40px 0;
+}
+.marketing p + h4 {
+margin-top: 28px;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+/* Remove the padding we set earlier */
+.header,
+.marketing,
+.footer {
+  padding-right: 0;
+  padding-left: 0;
+}
+/* Space out the masthead */
+.header {
+  margin-bottom: 30px;
+}
+
+.jumbotron {
+margin: 0px;
+border-bottom: 0;
+}
+}
+
+#upload_icon,
+#signIn_User_Icon {
+font-size: 125px;
+color: #CCCCCC;
+}
+#upload_icon:hover,
+#signIn_User_Icon:hover {
+color: #E62117;
+cursor: pointer;
+}
+#googleNotAuth {
+cursor: pointer;
+}
+
+#account-image,
+#account-image img  {
+-webkit-border-radius: 50%;
+-webkit-border-radius: 50%;
+border-radius: 50%;
+float: left;
+height: 46px;
+width: 46px;
+}
+
+#account-name {
+color: #427fed;
+font-size: 16px;
+font-weight: bold;
+padding-top: 3px;
+}
+#account-name,
+#account-email {
+display: block;
+margin-left: 58px;
+overflow: hidden;
+padding-right: 20px;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+
+#privacyChosen {
+border-color: #d3d3d3;
+background: #f8f8f8;
+color: #333;
+border-radius:0px !important;
+font-weight:500;
+font-size:11px;
+line-height: normal;
+}
+
+
+.dropdown .dropdown-menu li a:hover {
+background-image: none;
+background-color: #333;
+color: #fff;
+}
+.dropdown .dropdown-menu li a {
+display: block;
+margin: 0;
+padding: 0 25px;
+color: #333;
+font-size: 13px;
+text-decoration: none;
+white-space: nowrap;
+word-wrap: normal;
+line-height: 25px;
+cursor: pointer;
+}
+
+#dropView .dropdown .dropdown-menu {
+outline: none;
+padding: 8px 0;
+position: absolute;
+border: 1px solid #ccc;
+z-index: 2147483647;
+overflow: auto;
+background: #fff;
+border-radius: 2px;
+margin-top: -1px;
+min-width: 0px;
+}
+
+#headerUserDropdown {
+  /*background: url(//ssl.gstatic.com/accounts/ui/arrow_right_1x.png) 308px center no-repeat;
+  -webkit-background-size: 21px 21px;
+  background-size: 21px 21px;
+  border: 0;
+  border-left: 4px solid transparent;
+  cursor: pointer;
+  display: block;
+  height: 100%;
+  outline: none;
+  padding: 15px 20px;
+  text-align: left;
+  text-overflow: ellipsis;
+  width: 100%;*/
+
+  background: none;
+/* background-size: 21px 21px; */
+border: none;
+/* border-left: 4px solid transparent; */
+cursor: pointer;
+display: block;
+height: 100%;
+outline: none;
+padding: 15px 20px 15px 0px;
+text-align: left;
+text-overflow: ellipsis;
+width: 100%;
+-webkit-box-shadow: none;
+box-shadow: none;
+}
