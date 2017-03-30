@@ -44,6 +44,9 @@
         signoutButton.style.display = 'block';
         uploadDisplay.style.display = 'block';
         makeApiCall();
+
+        
+
       } else {
         authorizeButton.style.display = 'block';
         signoutButton.style.display = 'none';
@@ -52,6 +55,7 @@
     }
     function handleAuthClick(event) {
       gapi.auth2.getAuthInstance().signIn();
+
     }
     function handleSignoutClick(event) {
       gapi.auth2.getAuthInstance().signOut();
@@ -105,4 +109,10 @@
               $('#account-email').html(email);
             });
         });
+    }
+
+    function testUpload() {
+      gapi.client.youtube.videos.list( {'part' : 'snippet', 'myRating' : 'like'} ).execute(function(resp) {
+        console.log(resp);
+      });
     }
