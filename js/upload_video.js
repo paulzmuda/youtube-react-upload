@@ -9,127 +9,13 @@ var STATUS_POLLING_INTERVAL_MILLIS = 60 * 1000; // One minute.
  * @constructor
  */
 var UploadVideo = function() {
-  /**
-   * The array of tags for the new YouTube video.
-   *
-   * @attribute tags
-   * @type Array.<string>
-   * @default ['google-cors-upload']
-   */
-  this.tags = ['youtube-cors-upload'];
-
-  /**
-   * The numeric YouTube
-   * [category id](https://developers.google.com/apis-explorer/#p/youtube/v3/youtube.videoCategories.list?part=snippet&regionCode=us).
-   *
-   * @attribute categoryId
-   * @type number
-   * @default 22
-   */
+  this.tags = ['paulzmuda/youtube-client'];
   this.categoryId = 22;
-
-  /**
-   * The id of the new video.
-   *
-   * @attribute videoId
-   * @type string
-   * @default ''
-   */
   this.videoId = '';
-
   this.uploadStartTime = 0;
-};
-
-
-UploadVideo.prototype.ready = function(accessToken) {
-  this.accessToken = accessToken;
   this.gapi = gapi;
-  this.authenticated = true;
-  this.gapi.client.request({
-    path: '/youtube/v3/channels',
-    params: {
-      part: 'snippet',
-      mine: true
-    },
-    callback: function(response) {
-      if (response.error) {
-        console.log(response.error.message);
-      } else {
-        $('#channel-name').text(response.items[0].snippet.title);
-        $('#channel-thumbnail').attr('src', response.items[0].snippet.thumbnails.default.url);
-
-        $('.pre-sign-in').hide();
-        $('.post-sign-in').show();
-      }
-    }.bind(this)
-  });
-  // $('#button').on("click", this.handleUploadClicked.bind(this));
-
-  // pz custom here
-  //dropYoutube.on("addedfile", this.handleUploadClicked.bind(file));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//   QueueVideo = function() {
-//     console.log('Checking Queue');
-//     dropYoutube.files.forEach(function(item, index, array) {
-//       if(item.status == 'Uploading') {
-//         prevent = true;
-//       }
-//     });
-//     if (prevent != true) {
-//       if (typeof dropYoutube.files[0] != "undefined") {
-//         prevent = true;
-//         dropYoutube.files[0].status = ('Uploading');
-//         console.log('Triggering Upload');
-//         $(dropYoutube).trigger('gapi');
-//       } else {
-//         console.log('Queue empty, ending job.');
-//       }
-//     } else {
-//       console.log('Waiting for other file to finish uploading');
-//       setTimeout(function(){ QueueVideo(); }, 10000);
-//     }
-//   }
-//   $(dropYoutube).on('fileReady', function() { QueueVideo(); });  // execute above function
-//   $(dropYoutube).on('gapi', UploadVideo.prototype.handleUploadClicked.bind(this));
-
-
-
-
-
-
-// end of .ready
 };
 
-
-
-
-
-
-
-
-
-
-
-
-/**
- * Uploads a video file to YouTube.
- *
- * @method uploadFile
- * @param {object} file File object corresponding to the video to upload.
- */
 UploadVideo.prototype.uploadFile = function(file) {
   var metadata = {
     snippet: {
@@ -140,7 +26,7 @@ UploadVideo.prototype.uploadFile = function(file) {
     },
     status: {
       // privacyStatus: $('#privacy-status option:selected').text()
-      privacyStatus: 'Public'
+      privacyStatus: $('#privacyChosen').val()
     }
   };
   var uploader = new MediaUploader({
@@ -159,6 +45,14 @@ UploadVideo.prototype.uploadFile = function(file) {
       try {
         var errorResponse = JSON.parse(data);
         message = errorResponse.error.message;
+
+
+        file.status = Dropzone.ERROR;
+        dropYoutube.emit("error", file, 'message', 'xhr');
+        dropYoutube.emit("complete", file);
+
+
+
       } finally {
         alert(message);
       }
@@ -177,17 +71,21 @@ UploadVideo.prototype.uploadFile = function(file) {
         max: totalBytes
       });
 
-      $('#percent-transferred').text(percentageComplete);
-      $('#bytes-transferred').text(bytesUploaded);
-      $('#total-bytes').text(totalBytes);
+      file.upload.progress = percentageComplete;
+      file.upload.bytesSent = bytesUploaded;
+
+      console.log(percentageComplete);
+      // $('#total-bytes').text(totalBytes);
 
       $('.during-upload').show();
     }.bind(this),
     onComplete: function(data) {
       var uploadResponse = JSON.parse(data);
       this.videoId = uploadResponse.id;
-      $('#video-id').text(this.videoId);
-      $('.post-upload').show();
+      file.status = Dropzone.SUCCESS;
+      dropYoutube.emit("success", file, 'responseText', 'e');    // this.emit("success", file, responseText, e);
+      dropYoutube.emit("complete", file);
+      dropYoutube.processQueue(); 
       this.pollForVideoStatus();
     }.bind(this)
   });

@@ -43,9 +43,10 @@
         authorizeButton.style.display = 'none';
         signoutButton.style.display = 'block';
         uploadDisplay.style.display = 'block';
+
         makeApiCall();
 
-        
+
 
       } else {
         authorizeButton.style.display = 'block';
@@ -60,20 +61,10 @@
     function handleSignoutClick(event) {
       gapi.auth2.getAuthInstance().signOut();
     }
-    // Load the API and make an API call.  Display the results on the screen.
-    // function makeApiCall() {
-    //   gapi.client.people.people.get({
-    //     resourceName: 'people/me'
-    //   }).then(function(resp) {
-    //     var p = document.createElement('p');
-    //     var name = resp.result.names[0].givenName;
-    //     p.appendChild(document.createTextNode('Hello, '+name+'!'));
-    //     document.getElementById('content').appendChild(p);
-    //   });
-    // }
+
     function makeApiCall() {
       // gapi.client.load('youtube', 'v3', function() {
-      //     console.log('youtube API loaded...');
+      //     console.log('youtube API loaded yo...');
       //     var request = gapi.client.youtube.channels.list({
       //         part: 'snippet',
       //         mine: true
@@ -85,27 +76,19 @@
       //   });
 
         gapi.client.load('plus', 'v1', function() {
-          console.log('youtube API loaded...');
             gapi.client.plus.people.get( {'userId' : 'me'} ).execute(function(resp) {
-            // Shows profile information
-            // console.log(resp);
-            var name = resp.displayName; // console.log(resp.items[0].snippet.title);
-            $('#account-name').html(name);
-
-            var img = new Image();
+              // Shows profile information // console.log(resp);
+              var name = resp.displayName; // console.log(resp.items[0].snippet.title);
+              $('#account-name').html(name);
+              var img = new Image();
               img.src = resp.image.url;
-            // document.getElementById('account-image').appendChild(img);
-            $('#account-image').html(img);
+              $('#account-image').html(img);
             })
         });
         gapi.client.load('oauth2', 'v2', function() {
             // console.log('youtube API loaded again...');
             gapi.client.oauth2.userinfo.get().execute(function(resp) {
-              // console.log(resp.email);
-
                 var email = resp.email; // console.log(resp.items[0].snippet.title);
-
-              // document.getElementById('account-email').appendChild(p);
               $('#account-email').html(email);
             });
         });
