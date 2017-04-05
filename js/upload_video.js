@@ -77,6 +77,12 @@ UploadVideo.prototype.uploadFile = function(file) {
       console.log(percentageComplete);
       // $('#total-bytes').text(totalBytes);
 
+
+      document.querySelector(".progress-bar").style.width = percentageComplete + "%";
+
+
+
+
       $('.during-upload').show();
     }.bind(this),
     onComplete: function(data) {
@@ -85,7 +91,7 @@ UploadVideo.prototype.uploadFile = function(file) {
       file.status = Dropzone.SUCCESS;
       dropYoutube.emit("success", file, 'responseText', 'e');    // this.emit("success", file, responseText, e);
       dropYoutube.emit("complete", file);
-      dropYoutube.processQueue(); 
+      dropYoutube.processQueue();
       this.pollForVideoStatus();
     }.bind(this)
   });

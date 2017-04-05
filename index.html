@@ -81,6 +81,47 @@
         </div>
       </div>
       <!-- END Authenticated uploader window -->
+
+      <!-- File Template !-->
+      <!-- <div class="table table-striped" class="files" id="previews">
+
+      </div> -->
+      <!-- END File Template !-->
+
+      <!-- Where the files will display !-->
+      <div class="panel-group" id="previews" role="tablist" aria-multiselectable="true">
+        <div id="dzTemplate" class="panel panel-default file-row">
+          <div class="panel-heading video-upload-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Uploading x%
+              </a>
+            </h4>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body video-upload-body">
+              Basic Info <br />
+              <hr />
+              <input value="title" />
+              <input type="textbox" value="description" />
+              <label>Privacy</label>
+              <input value="Public" />
+              <label>Category</label>
+              <input value="People & Blogs" />
+              <input value="Tags" />
+              (video preview)<br />
+              <button>Custom Thumbnail</button>Max file size is 2mb
+              <br />
+            </div>
+          </div>
+          <div class="panel-footer">
+            <!-- <p class="size" data-dz-size></p> -->
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+            </div>
+          </div>
+        </div></div>
+      <!-- END Where the files will display !-->
       <footer class="footer">
         <p>&copy; MIT GNU License</p>
         <p><small><i>Note: Google will prompt you to login.  Any videos uploaded using this tool will go to the Youtube channel associated with your account.  This is will be in a pop-up window directly from Google using a secure OAuth2 authentication.  No personal information is stored.</i></small></p>

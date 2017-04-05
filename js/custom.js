@@ -21,24 +21,40 @@
     });
   });
 
+// Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+previewNode = document.querySelector("#dzTemplate");
+previewNode.id = "";
+previewTemplate = previewNode.parentNode.innerHTML;
+previewNode.parentNode.removeChild(previewNode);
 
-  dropYoutube = new Dropzone('#dropView', {
+activeDropzone = function() {
+  dropYoutube = new Dropzone(document.body, {
     url: "/",
     //previewsContainer: ".dropzone-previews",
     clickable: "#upload_icon",
+    previewTemplate: previewTemplate,
+    previewsContainer: '#previews',
     paramName: "video",
     method: "post",
     acceptedFiles: "video/*",
     autoProcessQueue: true,
     parallelUploads: 1,
-    addRemoveLinks: true,
+    addRemoveLinks: false,
+    init: function() {
+      console.log('dz init');
+    },
     accept: function(file, done) {
+
+      $('#dropView').hide();
       // console.log('accepted ' + file.name);
       // replace contents of view with upload dialog where you can add meta fields.  this may have to go under template
       return done();
+    },
+    sending: function(file) {
+      // make footer appear
     }
   });
-
+}; // end activeDropzone
   Dropzone.prototype.uploadFiles = function (file) {  // Override Function. Original - https://github.com/enyo/dropzone/blob/master/dist/dropzone.js#L1236
     uploadVideo = new UploadVideo();
     uploadVideo.accessToken = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;

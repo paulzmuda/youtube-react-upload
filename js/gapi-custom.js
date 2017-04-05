@@ -44,7 +44,8 @@
         signoutButton.style.display = 'block';
         uploadDisplay.style.display = 'block';
 
-        makeApiCall();
+
+        makeApiCall(); // function to run upon successful login 
 
 
 
@@ -74,6 +75,8 @@
       //       console.log('do nothing here');
       //     });
       //   });
+
+      activeDropzone(); // activate dropzone upon successful login
 
         gapi.client.load('plus', 'v1', function() {
             gapi.client.plus.people.get( {'userId' : 'me'} ).execute(function(resp) {
