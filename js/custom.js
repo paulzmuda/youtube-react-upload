@@ -46,6 +46,10 @@ activeDropzone = function() {
     accept: function(file, done) {
 
       $('#dropView').hide();
+
+      file.previewTemplate.querySelector(".headerFileName").innerHTML = file.name;
+
+
       var d = new Date();
       var n = d.getTime();
       file.fileId = file.name.replace(/\s|\./g, "")+n; // may need to regex this to remove spaces
@@ -63,6 +67,9 @@ activeDropzone = function() {
         $('#Body-'+file.fileId).collapse("hide");
       }
 
+      // testing
+      //$(file.previewTemplate.querySelector('.panel-footer')).show();
+      //file.previewTemplate.querySelector(".progress-bar").style.width = 50 + "%";
       return done();
     },
     sending: function(file) {
@@ -97,3 +104,12 @@ $(".dropdown-menu li a").click(function(){
    $(this).parents(".dropdown").find('.btn').val($(this).text());
 });
 });
+
+function toggleIcon(e) {
+    $(e.target)
+        .prev('.panel-heading')
+        .find(".more-less")
+        .toggleClass('glyphicon-minus glyphicon-plus');
+}
+$('.panel-group').on('hidden.bs.collapse', toggleIcon);
+$('.panel-group').on('shown.bs.collapse', toggleIcon);

@@ -79,7 +79,7 @@ UploadVideo.prototype.uploadFile = function(file) {
 
       $(file.previewTemplate.querySelector('.panel-footer')).show();
       file.previewTemplate.querySelector(".progress-bar").style.width = percentageComplete + "%";
-      file.previewTemplate.querySelector(".progressText").innerHTML = "Uploading - " + Math.round(percentageComplete) + "%";
+      file.previewTemplate.querySelector(".progressText").innerHTML = "Uploading " + Math.round(percentageComplete) + "%";
 
       $('.during-upload').show();
     }.bind(this),
@@ -91,7 +91,7 @@ UploadVideo.prototype.uploadFile = function(file) {
       dropYoutube.emit("complete", file);
       file.previewTemplate.querySelector(".progressText").innerHTML = "Finished Uploading (Processing)";
       dropYoutube.processQueue();
-      this.pollForVideoStatus();
+      this.pollForVideoStatus(file);
     }.bind(this)
   });
   // This won't correspond to the *exact* start of the upload, but it should be close enough.
@@ -100,7 +100,7 @@ UploadVideo.prototype.uploadFile = function(file) {
 };
 
 
-UploadVideo.prototype.pollForVideoStatus = function() {
+UploadVideo.prototype.pollForVideoStatus = function(file) {
   this.gapi.client.request({
     path: '/youtube/v3/videos',
     params: {
@@ -114,20 +114,27 @@ UploadVideo.prototype.pollForVideoStatus = function() {
         setTimeout(this.pollForVideoStatus.bind(this), STATUS_POLLING_INTERVAL_MILLIS);
       } else {
         var uploadStatus = response.items[0].status.uploadStatus;
+        var fileId = file.fileId;
         switch (uploadStatus) {
           // This is a non-final status, so we need to poll again.
           case 'uploaded':
             // no change in text
+            console.log(fileId);
             setTimeout(this.pollForVideoStatus.bind(this), STATUS_POLLING_INTERVAL_MILLIS);
+            console.log(response);
             break;
           // The video was successfully transcoded and is available.
           case 'processed':
-            $('#player').html(response.items[0].player.embedHtml);
-            $('#post-upload-status').html('Complete');
+            // $('.player').html(response.items[0].player.embedHtml);
+            // $('#post-upload-status').html('Complete');
+            console.log(fileId); //file.previewTemplate.querySelector(".progressText").innerHTML = "Complete";
+            console.log(fileId); //file.previewTemplate.querySelector(".player").innerHTML = response.items[0].player.embedHtml;
             break;
           // All other statuses indicate a permanent transcoding failure.
           default:
-            $('#post-upload-status').html('Transcoding failed - Check YouTube Video Manager for More Details');
+            // $('#post-upload-status').html('
+            file.previewTemplate.querySelector(".progressText").innerHTML = "Transcoding failed - Check YouTube Video Manager for More Details";
+            //');
             break;
         }
       }

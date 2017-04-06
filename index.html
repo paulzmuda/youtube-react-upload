@@ -94,24 +94,49 @@
           <div class="panel-heading video-upload-heading" role="tab" id="dz-template-heading-id-added-later" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="dz-template-body-id-added-later">
             <h4 class="panel-title">
               <span class="progressText" id="post-upload-status">Pending</span>
+              <i class="more-less glyphicon glyphicon-minus headerPlusMinus"></i>
             </h4>
+            <div class="headerFileName"></div>
           </div>
           <div id="dz-template-body-id-added-later" class="panel-collapse collapse in video-collapse" role="tabpanel" aria-labelledby="dz-template-heading-id-added-later">
             <div class="panel-body video-upload-body">
               <div class="row">
-                <div class="col-md-6">
-                  Basic Info <br />
-                  <hr />
-                  <input value="title" />
-                  <input type="textbox" value="description" />
-                  <label>Privacy</label>
-                  <input value="Public" />
-                  <label>Category</label>
-                  <input value="People & Blogs" />
-                  <input value="Tags" />
+                <div class="col-sm-6 col-md-6 col-xs-12">
+                  <div class="row">
+                    <div class="col-md-3">Basic Info</div><div class="col-md-9"><a href="https://www.youtube.com/my_videos?o=U" target="_blank"> > Video Manager</a></div>
+                    <hr />
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <input value="title" />
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <input type="textbox" value="description" />
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label>Privacy</label>
+                      <input value="Public" />
+                    </div>
+                    <div class="col-md-9">
+                      <label>Category</label>
+                      <input value="People & Blogs" />
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <input value="Tags" />
+                    </div>
+                  </div>
+
+
                 </div>
-                <div class="col-md-6">
-                  <div id="player">(video preview)</div><br />
+                <div class="col-sm-6 col-md-6 col-xs-12">
+                  <div class="player"><img src="img/yt-default-thumb.png" title="" alt="" /></div><br />
                   <button>Custom Thumbnail</button>Max file size is 2mb
                   <br />
                 </div>

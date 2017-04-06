@@ -240,4 +240,29 @@ box-shadow: none;
 .progress {
   margin-bottom: 0px;
   border-radius: 0px;
+  height: 8px;
+}
+.progressText {
+  position:absolute;
+}
+.progress-bar-success {
+  background-color: #337ab7;
+}
+.headerFileName {
+    color: rgb(248, 242, 242);
+    font-weight: 500;
+    font-size: 12px;
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.7);
+    text-align: center;
+}
+.headerPlusMinus {
+  float:right;
+}
+
+.player {
+  width: 316px;
+}
+iframe {
+  width: 316px;
+  height: 178px;
 }
