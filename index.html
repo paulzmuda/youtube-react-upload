@@ -91,36 +91,44 @@
       <!-- Where the files will display !-->
       <div class="panel-group" id="previews" role="tablist" aria-multiselectable="true">
         <div id="dzTemplate" class="panel panel-default file-row">
-          <div class="panel-heading video-upload-heading" role="tab" id="headingOne">
+          <div class="panel-heading video-upload-heading" role="tab" id="dz-template-heading-id-added-later" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="dz-template-body-id-added-later">
             <h4 class="panel-title">
-              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Uploading x%
-              </a>
+              <span class="progressText" id="post-upload-status">Pending</span>
             </h4>
           </div>
-          <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+          <div id="dz-template-body-id-added-later" class="panel-collapse collapse in video-collapse" role="tabpanel" aria-labelledby="dz-template-heading-id-added-later">
             <div class="panel-body video-upload-body">
-              Basic Info <br />
-              <hr />
-              <input value="title" />
-              <input type="textbox" value="description" />
-              <label>Privacy</label>
-              <input value="Public" />
-              <label>Category</label>
-              <input value="People & Blogs" />
-              <input value="Tags" />
-              (video preview)<br />
-              <button>Custom Thumbnail</button>Max file size is 2mb
-              <br />
+              <div class="row">
+                <div class="col-md-6">
+                  Basic Info <br />
+                  <hr />
+                  <input value="title" />
+                  <input type="textbox" value="description" />
+                  <label>Privacy</label>
+                  <input value="Public" />
+                  <label>Category</label>
+                  <input value="People & Blogs" />
+                  <input value="Tags" />
+                </div>
+                <div class="col-md-6">
+                  <div id="player">(video preview)</div><br />
+                  <button>Custom Thumbnail</button>Max file size is 2mb
+                  <br />
+                </div>
+              </div>
+
+
+
             </div>
           </div>
-          <div class="panel-footer">
+          <div class="panel-footer" style="display: none;">
             <!-- <p class="size" data-dz-size></p> -->
             <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
               <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
             </div>
           </div>
-        </div></div>
+        </div>
+      </div>
       <!-- END Where the files will display !-->
       <footer class="footer">
         <p>&copy; MIT GNU License</p>

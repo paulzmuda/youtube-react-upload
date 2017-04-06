@@ -74,14 +74,12 @@ UploadVideo.prototype.uploadFile = function(file) {
       file.upload.progress = percentageComplete;
       file.upload.bytesSent = bytesUploaded;
 
-      console.log(percentageComplete);
+      // console.log(percentageComplete);
       // $('#total-bytes').text(totalBytes);
 
-
-      document.querySelector(".progress-bar").style.width = percentageComplete + "%";
-
-
-
+      $(file.previewTemplate.querySelector('.panel-footer')).show();
+      file.previewTemplate.querySelector(".progress-bar").style.width = percentageComplete + "%";
+      file.previewTemplate.querySelector(".progressText").innerHTML = "Uploading - " + Math.round(percentageComplete) + "%";
 
       $('.during-upload').show();
     }.bind(this),
@@ -91,6 +89,7 @@ UploadVideo.prototype.uploadFile = function(file) {
       file.status = Dropzone.SUCCESS;
       dropYoutube.emit("success", file, 'responseText', 'e');    // this.emit("success", file, responseText, e);
       dropYoutube.emit("complete", file);
+      file.previewTemplate.querySelector(".progressText").innerHTML = "Finished Uploading (Processing)";
       dropYoutube.processQueue();
       this.pollForVideoStatus();
     }.bind(this)
@@ -118,17 +117,17 @@ UploadVideo.prototype.pollForVideoStatus = function() {
         switch (uploadStatus) {
           // This is a non-final status, so we need to poll again.
           case 'uploaded':
-            $('#post-upload-status').append('<li>Upload status: ' + uploadStatus + '</li>');
+            // no change in text
             setTimeout(this.pollForVideoStatus.bind(this), STATUS_POLLING_INTERVAL_MILLIS);
             break;
           // The video was successfully transcoded and is available.
           case 'processed':
-            $('#player').append(response.items[0].player.embedHtml);
-            $('#post-upload-status').append('<li>Final status.</li>');
+            $('#player').html(response.items[0].player.embedHtml);
+            $('#post-upload-status').html('Complete');
             break;
           // All other statuses indicate a permanent transcoding failure.
           default:
-            $('#post-upload-status').append('<li>Transcoding failed.</li>');
+            $('#post-upload-status').html('Transcoding failed - Check YouTube Video Manager for More Details');
             break;
         }
       }

@@ -5,6 +5,13 @@ padding-top: 20px;
 padding-bottom: 20px;
 }
 
+body, .navbar-fixed-top, .navbar-fixed-bottom {
+  margin-right: 0 !important;
+}
+html {
+  overflow-y: scroll;
+}
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
@@ -92,7 +99,8 @@ color: #CCCCCC;
 color: #E62117;
 cursor: pointer;
 }
-#googleNotAuth {
+#googleNotAuth,
+.video-upload-heading {
 cursor: pointer;
 }
 
@@ -196,9 +204,31 @@ box-shadow: none;
 }
 
 /* Dropped Files */
+.panel-default>.panel-heading {
+  background-color: white;
+  background-image: none;
+}
 .panel-group {
   margin-bottom: 0px;
 }
+
+.panel-group .panel {
+  border-radius: 0px !important;
+}
+
+.panel {
+    margin-bottom: 0px;
+    background-color: #fff;
+    border: 0px;
+    border-radius: 0px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.panel-default {
+    border-color: none;
+}
+
 .panel-group .panel-footer {
   /*border-top-width: 1px !important;*/
 }

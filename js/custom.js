@@ -46,8 +46,23 @@ activeDropzone = function() {
     accept: function(file, done) {
 
       $('#dropView').hide();
-      // console.log('accepted ' + file.name);
-      // replace contents of view with upload dialog where you can add meta fields.  this may have to go under template
+      var d = new Date();
+      var n = d.getTime();
+      file.fileId = file.name.replace(/\s|\./g, "")+n; // may need to regex this to remove spaces
+      file.previewTemplate.querySelector(".video-upload-heading").id = "Heading-" + file.fileId;
+      $(file.previewTemplate.querySelector(".video-upload-heading")).attr("aria-controls", "Body-" + file.fileId);
+      $(file.previewTemplate.querySelector(".video-upload-heading")).attr("href", "#Body-" + file.fileId);
+      // $(file.previewTemplate.querySelector(".video-upload-heading h4 a")).attr("aria-controls", "Body-" + file.fileId);
+      // $(file.previewTemplate.querySelector(".video-upload-heading h4 a")).attr("href", "#Body-" + file.fileId);
+      file.previewTemplate.querySelector(".video-collapse").id = "Body-" + file.fileId;
+      $(file.previewTemplate.querySelector(".video-collapse")).attr("aria-labelledby", "#Heading-" + file.fileId);
+
+      if(this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+        // this is the first file dropped or first file since everything already completed
+      } else {
+        $('#Body-'+file.fileId).collapse("hide");
+      }
+
       return done();
     },
     sending: function(file) {
