@@ -249,7 +249,7 @@ box-shadow: none;
   background-color: #337ab7;
 }
 .headerFileName {
-    color: rgb(248, 242, 242);
+    color: rgba(248, 242, 242, 0);
     font-weight: 500;
     font-size: 12px;
     text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.7);

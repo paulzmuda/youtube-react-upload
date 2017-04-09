@@ -114,27 +114,34 @@ UploadVideo.prototype.pollForVideoStatus = function(file) {
         setTimeout(this.pollForVideoStatus.bind(this), STATUS_POLLING_INTERVAL_MILLIS);
       } else {
         var uploadStatus = response.items[0].status.uploadStatus;
-        var fileId = file.fileId;
         switch (uploadStatus) {
           // This is a non-final status, so we need to poll again.
           case 'uploaded':
             // no change in text
-            console.log(fileId);
+            console.log(uploadStatus);
             setTimeout(this.pollForVideoStatus.bind(this), STATUS_POLLING_INTERVAL_MILLIS);
             console.log(response);
+            updateFileId(file, response.items[0].id);
             break;
           // The video was successfully transcoded and is available.
           case 'processed':
-            // $('.player').html(response.items[0].player.embedHtml);
-            // $('#post-upload-status').html('Complete');
-            console.log(fileId); //file.previewTemplate.querySelector(".progressText").innerHTML = "Complete";
-            console.log(fileId); //file.previewTemplate.querySelector(".player").innerHTML = response.items[0].player.embedHtml;
+            for (var i = 0, len = dropYoutube.files.length; i < len; i++) {
+                if (dropYoutube.files[i].fileId === response.items[0].id) {
+            		    dropYoutube.files[i].previewTemplate.querySelector(".progressText").innerHTML = "Complete";
+                    dropYoutube.files[i].previewTemplate.querySelector(".player").innerHTML = response.items[0].player.embedHtml;
+                    dropYoutube.files[i].previewTemplate.querySelector(".progress-bar").style.width = 0 + "%";
+                  break;
+                }
+            }
             break;
           // All other statuses indicate a permanent transcoding failure.
           default:
-            // $('#post-upload-status').html('
-            file.previewTemplate.querySelector(".progressText").innerHTML = "Transcoding failed - Check YouTube Video Manager for More Details";
-            //');
+            for (var i = 0, len = dropYoutube.files.length; i < len; i++) {
+                if (dropYoutube.files[i].fileId === response.items[0].id) {
+                    dropYoutube.files[i].previewTemplate.querySelector(".progressText").innerHTML = "Transcoding failed - Check YouTube Video Manager for More Details";
+                  break;
+                }
+            }
             break;
         }
       }
