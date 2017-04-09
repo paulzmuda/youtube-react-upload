@@ -81,9 +81,9 @@ activeDropzone = function() {
       }
 
       // testing
-      //$(file.previewTemplate.querySelector('.panel-footer')).show();
-      //file.previewTemplate.querySelector(".progress-bar").style.width = 50 + "%";
-      return done();
+      $(file.previewTemplate.querySelector('.panel-footer')).show();
+      file.previewTemplate.querySelector(".progress-bar").style.width = 50 + "%";
+      // return done();
     },
     sending: function(file) {
       // make footer appear

@@ -102,36 +102,54 @@
             <div class="panel-body video-upload-body">
               <div class="row">
                 <div class="col-sm-6 col-md-6 col-xs-12">
-                  <div class="row">
-                    <div class="col-md-3">Basic Info</div><div class="col-md-9"><a href="https://www.youtube.com/my_videos?o=U" target="_blank"> > Video Manager</a></div>
+                  <!-- <div class="row">
+                    <div class="col-md-12">Basic Info</div>
+                     <div class="col-md-9"><a href="https://www.youtube.com/my_videos?o=U" target="_blank"> > Video Manager</a></div>
                     <hr />
+                  </div> -->
+                  <div class="row">
+                    <div class="col-md-12">
+                      <input type="text" class="form-control" placeholder="Title" />
+                    </div>
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                      <input value="title" />
+                      <textarea class="form-control" rows="5" placeholder="Description"></textarea>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-12">
-                      <input type="textbox" value="description" />
+                    <div class="col-md-5">
+                      <label for="">Privacy</label>
+                      <select class="form-control">
+                        <option label="Public" value="Public">Public</option>
+                        <option label="Unlisted" value="Public">Unlisted</option>
+                        <option label="Private" value="Public">Private</option>
+                        <option label="Scheduled" value="Public">Scheduled</option>
+                      </select>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-3">
-                      <label>Privacy</label>
-                      <input value="Public" />
-                    </div>
-                    <div class="col-md-9">
+                    <div class="col-md-7">
                       <label>Category</label>
-                      <input value="People & Blogs" />
+                      <select class="form-control">
+                        <option label="Film &amp; Animation" value="1">Film &amp; Animation</option>
+                        <option label="Autos &amp; Vehicles" value="2">Autos &amp; Vehicles</option>
+                        <option label="Music" value="10">Music</option>
+                        <option label="Pets &amp; Animals" value="15">Pets &amp; Animals</option>
+                        <option label="Sports" value="17">Sports</option>
+                        <option label="Travel &amp; Events" value="19">Travel &amp; Events</option>
+                        <option label="Gaming" value="20">Gaming</option>
+                        <option label="People &amp; Blogs" value="22" selected="selected">People &amp; Blogs</option>
+                        <option label="Comedy" value="23">Comedy</option>
+                        <option label="Entertainment" value="24">Entertainment</option>
+                        <option label="News &amp; Politics" value="25">News &amp; Politics</option>
+                        <option label="Howto &amp; Style" value="26">Howto &amp; Style</option>
+                        <option label="Education" value="27">Education</option>
+                        <option label="Science &amp; Technology" value="28">Science &amp; Technology</option>
+                        <option label="Nonprofits &amp; Activism" value="29">Nonprofits &amp; Activism</option>
+                      </select>
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="col-md-12">
-                      <input value="Tags" />
-                    </div>
-                  </div>
+
 
 
                 </div>
@@ -142,6 +160,12 @@
                 </div>
               </div>
 
+
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="text" class="form-control" placeholder="Tags" />
+                </div>
+              </div>
 
 
             </div>
