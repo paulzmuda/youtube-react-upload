@@ -100,26 +100,24 @@
           </div>
           <div id="dz-template-body-id-added-later" class="panel-collapse collapse in video-collapse" role="tabpanel" aria-labelledby="dz-template-heading-id-added-later">
             <div class="panel-body video-upload-body">
-              <div class="row">
+              <div class="row" style="margin-bottom: 15px;">
                 <div class="col-sm-6 col-md-6 col-xs-12">
                   <!-- <div class="row">
                     <div class="col-md-12">Basic Info</div>
                      <div class="col-md-9"><a href="https://www.youtube.com/my_videos?o=U" target="_blank"> > Video Manager</a></div>
                     <hr />
                   </div> -->
-                  <div class="row">
-                    <div class="col-md-12">
-                      <input type="text" class="form-control" placeholder="Title" />
-                    </div>
+
+                  <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Title" />
                   </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <textarea class="form-control" rows="5" placeholder="Description"></textarea>
-                    </div>
+
+                  <div class="form-group">
+                    <textarea class="form-control" rows="5" placeholder="Description"></textarea>
                   </div>
-                  <div class="row">
+                  <div class="form-group">
                     <div class="col-md-5">
-                      <label for="">Privacy</label>
+                      <label class="label-staggered">Privacy</label>
                       <select class="form-control">
                         <option label="Public" value="Public">Public</option>
                         <option label="Unlisted" value="Public">Unlisted</option>
@@ -128,7 +126,7 @@
                       </select>
                     </div>
                     <div class="col-md-7">
-                      <label>Category</label>
+                      <label class="label-staggered">Category</label>
                       <select class="form-control">
                         <option label="Film &amp; Animation" value="1">Film &amp; Animation</option>
                         <option label="Autos &amp; Vehicles" value="2">Autos &amp; Vehicles</option>
@@ -155,16 +153,14 @@
                 </div>
                 <div class="col-sm-6 col-md-6 col-xs-12">
                   <div class="player"><img src="img/yt-default-thumb.png" title="" alt="" /></div><br />
-                  <button>Custom Thumbnail</button>Max file size is 2mb
+                  <button class="btn btn-default" type="submit">Custom Thumbnail</button><small style="padding: 10px; position: relative; top: 10px;"><i>Max file size is 2mb</i></small>
                   <br />
                 </div>
               </div>
 
 
-              <div class="row">
-                <div class="col-md-12">
+              <div class="form-group" style="margin-bottom: 0px;">
                   <input type="text" class="form-control" placeholder="Tags" />
-                </div>
               </div>
 
 
