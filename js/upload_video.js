@@ -16,11 +16,27 @@ var UploadVideo = function() {
   this.gapi = gapi;
 };
 
+// PUT https://www.googleapis.com/youtube/v3/videos?part=snippet&fields=snippet%2Ftitle&key={YOUR_API_KEY}
+//
+// {
+//  "id": "USr12mRoh7c",
+//  "snippet": {
+//   "title": "cat man crosses street",
+//   "description": "cats on a stroller",
+//   "categoryId": "1",
+//   "tags": [
+//    "first",
+//    "second",
+//    "third"
+//   ]
+//  }
+// }
+
 UploadVideo.prototype.uploadFile = function(file) {
   var metadata = {
     snippet: {
-      title: $('#title').val(),
-      description: $('#description').text(),
+      title: file.previewTemplate.querySelector(".videoTitle").value,
+      description: file.previewTemplate.querySelector(".videoDescr").value,
       tags: this.tags,
       categoryId: this.categoryId
     },
@@ -80,6 +96,8 @@ UploadVideo.prototype.uploadFile = function(file) {
       $(file.previewTemplate.querySelector('.panel-footer')).show();
       file.previewTemplate.querySelector(".progress-bar").style.width = percentageComplete + "%";
       file.previewTemplate.querySelector(".progressText").innerHTML = "Uploading " + Math.round(percentageComplete) + "%";
+
+      // console.log();
 
       $('.during-upload').show();
     }.bind(this),

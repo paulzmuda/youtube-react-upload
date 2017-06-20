@@ -81,9 +81,10 @@ activeDropzone = function() {
       }
 
       // testing
-      $(file.previewTemplate.querySelector('.panel-footer')).show();
-      file.previewTemplate.querySelector(".progress-bar").style.width = 50 + "%";
-      // return done();
+      // $(file.previewTemplate.querySelector('.panel-footer')).show();
+      // file.previewTemplate.querySelector(".progress-bar").style.width = 50 + "%";
+      return done();
+      //
     },
     sending: function(file) {
       // make footer appear
@@ -97,18 +98,18 @@ activeDropzone = function() {
     return;
   }
 
-  $('<input>').attr({
-      type: 'hidden',
-      id: 'title',
-      name: 'title',
-      value: 'dyn title'
-  }).appendTo('body');
-  $('<input>').attr({
-      type: 'hidden',
-      id: 'description',
-      name: 'description',
-      value: 'dyn description'
-  }).appendTo('body');
+  // $('<input>').attr({
+  //     type: 'hidden',
+  //     id: 'title',
+  //     name: 'title',
+  //     value: 'dyn title'
+  // }).appendTo('body');
+  // $('<input>').attr({
+  //     type: 'hidden',
+  //     id: 'description',
+  //     name: 'description',
+  //     value: 'dyn description'
+  // }).appendTo('body');
 
 // get value of dropdown // $('#privacyChosen').val();
 $(function(){
