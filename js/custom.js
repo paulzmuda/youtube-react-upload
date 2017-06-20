@@ -27,6 +27,7 @@ previewNode.id = "";
 previewTemplate = previewNode.parentNode.innerHTML;
 previewNode.parentNode.removeChild(previewNode);
 
+// makes template unique for each video uploaded
 updateFileId = function(file, id=false) {
 
   if(id) {
@@ -67,12 +68,7 @@ activeDropzone = function() {
 
       file.previewTemplate.querySelector(".headerFileName").innerHTML = file.name;
 
-
-
-      updateFileId(file);
-
-
-
+      updateFileId(file);  // makes template unique for each video uploaded
 
       if(this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
         // this is the first file dropped or first file since everything already completed

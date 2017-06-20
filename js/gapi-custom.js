@@ -45,7 +45,7 @@
         uploadDisplay.style.display = 'block';
 
 
-        makeApiCall(); // function to run upon successful login 
+        makeApiCall(); // function to run upon successful login
 
 
 
@@ -62,6 +62,42 @@
     function handleSignoutClick(event) {
       gapi.auth2.getAuthInstance().signOut();
     }
+
+
+    function updateVideoMeta() {
+      gapi.client.load('youtube', 'v3', function() {
+          console.log('setting up meta update');
+          var request = gapi.client.youtube.videos.update({
+            part: "snippet",
+             "id": "USr12mRoh7c",
+             "snippet": {
+              "title": "cat man crosses street",
+              "description": "cats on a stroller dude with pirate hat",
+              "categoryId": "1",
+              "tags": [
+               "cat",
+               "stroller",
+               "pirate"
+              ]
+             }
+          });
+          // Step 6: Execute the API request
+          request.execute(function(resp) {
+            console.log('do nothing here');
+          });
+        });
+      }
+
+
+
+
+
+
+
+
+
+
+
 
     function makeApiCall() {
       // gapi.client.load('youtube', 'v3', function() {
