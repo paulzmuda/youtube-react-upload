@@ -1,6 +1,6 @@
 ## YouTube Upload Client using Dropzone.js and Google API v3 (Javascript)
 
-This is a work-in-progress.
+Simplified client-only upload to Youtube.  This is a work-in-progress and not even remotely ready for production use.
 
 Preview: https://paulzmuda.github.io/youtube-client/
 
