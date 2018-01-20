@@ -1,7 +1,9 @@
 // https://github.com/google/google-api-javascript-client/blob/master/samples/authSample.html
     // Enter an API key from the Google API Console:
     //   https://console.developers.google.com/apis/credentials
-    var apiKey = 'AIzaSyBrYISf21784Nl1wPa59-niBAXslvljlBE';
+    var apiKey = '';
+
+
     // Enter the API Discovery Docs that describes the APIs you want to
     // access. In this example, we are accessing the People API, so we load
     // Discovery Doc found here: https://developers.google.com/people/api/rest/
@@ -11,10 +13,14 @@
     //   https://console.developers.google.com/apis/credentials?project=_
     // In your API Console project, add a JavaScript origin that corresponds
     //   to the domain where you will be running the script.
-    var clientId = '613548846296-bibj9e8f2l1flltfp76gb5l5u8juq42u.apps.googleusercontent.com';
+
+
+    var clientId = '';
     // Enter one or more authorization scopes. Refer to the documentation for
     // the API or https://developers.google.com/people/v1/how-tos/authorizing
     // for details.
+
+
     var scopes = 'https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/plus.login';
     var authorizeButton = document.getElementById('googleNotAuth');
     var signoutButton = document.getElementById('signout-button');
@@ -44,10 +50,7 @@
         signoutButton.style.display = 'block';
         uploadDisplay.style.display = 'block';
 
-
         makeApiCall(); // function to run upon successful login
-
-
 
       } else {
         authorizeButton.style.display = 'block';
@@ -71,8 +74,8 @@
             part: "snippet",
              "id": "USr12mRoh7c",
              "snippet": {
-              "title": "cat man crosses street",
-              "description": "cats on a stroller dude with pirate hat",
+              "title": "test",
+              "description": "test",
               "categoryId": "1",
               "tags": [
                "cat",
@@ -87,17 +90,6 @@
           });
         });
       }
-
-
-
-
-
-
-
-
-
-
-
 
     function makeApiCall() {
       // gapi.client.load('youtube', 'v3', function() {
