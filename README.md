@@ -1,22 +1,19 @@
 ## YouTube Upload Client using Dropzone.js and Google API v3 (Javascript)
 
-Simplified client-only upload to Youtube.  This is an ugly, work-in-progress and not to be considered for production use.
+Work in progress. Simplified client-only upload to Youtube.
 
-Preview: https://paulzmuda.github.io/youtube-client/
+Preview: http://paulzmuda.com/examples/youtube-client
 
 ### To-Do List
 - Finish user drop-down menu 
+- auto-save input values and send to youtube api
+- tagging
+- custom thumbnail upload
+- add progress spinner in place of template image
 - Refactor
+- Helper function that stores youtube metadata in your own database
 - ReactJS Version
-- WordPress Plug-in
-
-### Browser Support
-
-- Chrome 7+
-- Firefox 4+
-- IE 10+
-- Opera 12+ (Version 12 for MacOS is disabled because their API is buddy)
-- Safari 6+
+- Then replace Dropzone with React Drag and Drop
 
 ### YouTube Data API v3
 
