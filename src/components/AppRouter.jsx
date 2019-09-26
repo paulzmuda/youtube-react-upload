@@ -44,7 +44,7 @@ class AppRouter extends React.Component {
 		this.state = {
 			uid: null,
 		}
-    // this.handleSignOut = this.handleSignOut.bind(this);
+    this.initClient = this.initClient.bind(this);
 	}
 
   // static propTypes = {
@@ -60,6 +60,46 @@ class AppRouter extends React.Component {
   //   // store: PropTypes.any,
   // };
   // static childContextTypes = ContextType;
+
+  
+
+
+  initClient = () => {
+    // 2. Initialize the JavaScript client library.
+    
+    // window.gapi.client
+    //   .init({
+    //     apiKey: process.env.GOOGLE_API_KEY,
+    //     clientId: process.env.GOOGLE_CLIENT_ID,
+    //     scope: 'profile',
+    //   })
+    //   .then(() => {
+    //   // 3. Initialize and make the API request.
+    //   // load(this.onLoad);
+    // }).then(function() {
+    //   // 3. Initialize and make the API request.
+    //   console.log('step 3');
+    //   return window.gapi.client.request({
+    //     'path': 'https://people.googleapis.com/v1/people/me?requestMask.includeField=person.names',
+    //   })
+    // }).then(function(response) {
+    //     console.log('error note here')
+    //   console.log(response.result);
+    // }, function(reason) {
+    //   console.log(reason);
+    //   // console.log('Error: ' + reason.result.error.message);
+    // });
+  };
+
+
+
+
+  
+
+
+
+
+
   
   componentWillMount() {
     console.log('AppRouter: Will Mount')
@@ -76,9 +116,10 @@ class AppRouter extends React.Component {
       if(user) {
         console.log('Auth: User is logged in...')
         await this.props.dispatch(handleReceivedUser(user));
-        const accessToken = await auth.currentUser.getIdToken(/* forceRefresh */true);
+        // const accessToken = await auth.currentUser.getIdToken(/* forceRefresh */true);
         console.log('here-----');
-        console.log(accessToken);
+        // console.log(accessToken);
+        window.gapi.load("client", this.initClient);
         console.log('----and there....');
         handleGoogleToken();
       } else {

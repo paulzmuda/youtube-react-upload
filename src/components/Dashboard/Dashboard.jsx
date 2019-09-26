@@ -24,6 +24,7 @@ import Zoom from '@material-ui/core/Zoom';
 // send form
 import { connect } from 'react-redux';
 import { handleSignOut } from '../../actions/user';
+import { handleInitGapi } from '../../actions/gapi';
 
 
 // import test from '../../../images/test.png';  <img src={test} style={{width:155}}/>
@@ -55,11 +56,16 @@ class Dashboard extends React.Component {
             //
           };
         this.logout = this.logout.bind(this);
+        this.testGapi = this.testGapi.bind(this);
     }
   
  
   logout() {
       this.props.dispatch(handleSignOut());
+  }
+
+  testGapi() {
+      this.props.dispatch(handleInitGapi());
   }
 
   componentDidMount(){
@@ -75,7 +81,8 @@ class Dashboard extends React.Component {
             alignItems='center'  
           >
             <Grid item xs={12}>
-                <Button onClick={this.logout}>test</Button>
+                <Button onClick={this.logout}>Logout</Button>
+                <Button onClick={this.testGapi}>Test GAPI</Button>
               <center>
               
                 <Typography 
