@@ -16,21 +16,38 @@ export const auth = app.auth();
 export const storageKey = 'pz-yt-ul';
 
 // Google Auth Provider
-export const provider = new firebase.auth.GoogleAuthProvider();
-// provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-provider.addScope('https://www.googleapis.com/auth/youtube');
-provider.addScope('https://www.googleapis.com/auth/userinfo.email');
-provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
-provider.addScope('https://www.googleapis.com/auth/plus.login');
+// export const provider = new firebase.auth.GoogleAuthProvider();
+// // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+// provider.addScope('https://www.googleapis.com/auth/youtube');
+// provider.addScope('https://www.googleapis.com/auth/userinfo.email');
+// provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
+// provider.addScope('https://www.googleapis.com/auth/plus.login');
 
-export const isAuthenticated = () => {
-  return !!auth.currentUser || !!localStorage.getItem(storageKey);
-};
+// export const auth2 = () => 
+//   window.gapi.auth2.init({
+//     client_id: process.env.GOOGLE_CLIENT_ID,
+//     fetch_basic_profile: false,
+//     scope: 'profile'
+//   });
+
+// export const isAuthenticated = () => {
+//   return window.gapi.auth2.isSignedIn.get();
+// };
 export const emailAuthProvider = firebase.auth.EmailAuthProvider;
 
 export const signInWithGoogle = () => {
-  firebase.auth().signInWithRedirect(provider);
+  // firebase.auth().signInWithRedirect(provider);
+    // const auth2 = window.gapi.auth2.init({
+    //   client_id: process.env.GOOGLE_CLIENT_ID,
+    //   fetch_basic_profile: false,
+    //   scope: 'profile'
+    // });
+    // Sign the user in, and then retrieve their ID.
+    auth2().signIn().then(function() {
+      console.log(auth2().currentUser.get().getId());
+    });
 }
+
 
 export const handleGoogleToken = () => {
   auth.getRedirectResult().then(function(result) {
@@ -38,7 +55,7 @@ export const handleGoogleToken = () => {
       console.log('yep')
       // This gives you a Google Access Token. You can use it to access the Google API.
       var token = result.credential.accessToken;
-      console.log(token);
+      // console.log(result.credential);
       var xhr = new XMLHttpRequest();
       xhr.open('GET',
         'https://people.googleapis.com/v1/people/me?requestMask.includeField=person.names');
@@ -49,6 +66,19 @@ export const handleGoogleToken = () => {
       xhr.onload = function() {
         var responseText = xhr.responseText;
         console.log(responseText);
+
+        // https://eamoses.github.io/blog/2019/06/18/oauth-react.html
+//https://medium.com/@augustinekwong/google-sign-in-for-reactjs-tutorial-1eb5d78ea2e6
+
+// https://blog.hasura.io/best-practices-of-using-jwt-with-graphql/#refresh_token_persistance
+
+        // https://developers.google.com/identity/sign-in/web/reference#gapiauth2authresponse
+//https://developers.google.com/identity/sign-in/web/people
+
+//https://stackoverflow.com/questions/49929134/how-to-get-refresh-token-for-google-api-using-firebase-authentication 
+
+// https://usehooks.com/useScript/
+
         // https://www.html5rocks.com/en/tutorials/cors/
         // https://blog.416serg.me/building-an-app-using-google-sheets-api-react-d69681d22ce1
         // https://blog.hasura.io/best-practices-of-using-jwt-with-graphql/
@@ -58,6 +88,14 @@ export const handleGoogleToken = () => {
         // https://github.com/google/google-api-javascript-client/blob/master/docs/cors.md
         // https://github.com/google/google-api-javascript-client/blob/master/docs/start.md#setup
         // https://github.com/google/google-api-javascript-client
+
+
+
+
+
+
+
+
         // 
         // {
         //   "resourceName": "people/110878525516078574128",

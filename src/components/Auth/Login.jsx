@@ -7,7 +7,7 @@ import { Redirect, withRouter} from 'react-router-dom';
 
 // import Auth from '../../utils/auth';
 
-import { auth, isAuthenticated } from '../../utils/auth';
+
 import { handleSignIn } from '../../actions/user';
 
 
@@ -127,9 +127,28 @@ class Login extends React.Component {
       this.props.dispatch(handleSignIn());
   }
 
-  componentDidMount(){
-    document.title = "Login | AirRide";
-  }
+  // componentDidMount(){
+  //   document.title = "Login | AirRide";
+  // }
+
+  // componentDidMount() {
+  //   window.gapi.load('auth2', () => {
+  //       window.gapi.auth2.init({
+  //       client_id: process.env.GOOGLE_CLIENT_ID,
+  //   }).then(() => {
+  //       window.gapi.signin2.render('my-signIn', {
+  //         'scope': 'profile email',
+  //         'width': 250,
+  //         'height': 50,
+  //         'longtitle': false,
+  //         'theme': 'dark',
+  //         // 'onsuccess': this.onSuccess,
+  //         // 'onfailure': this.onFailure
+  //       })
+  //     }) 
+  //   });
+  // }
+//  render = () => (<div id="my-signIn" />)
 
   render() {
     const { classes } = this.props;
@@ -143,7 +162,7 @@ class Login extends React.Component {
             alignItems='stretch'  
           >
             {
-                (redirectToReferrer || isAuthenticated()) && (<Redirect to={from || '/dashboard'}/>)
+                (redirectToReferrer || this.props.isAuthenticated) && (<Redirect to={from || '/dashboard'}/>)
             }
 
             {/* <Hidden smDown>
@@ -217,6 +236,7 @@ class Login extends React.Component {
                       item 
                       lg={12} md={12} sm={12} xs={12}
                     >
+                      <div id="my-signIn"></div>
                     <Typography variant="h4" gutterBottom style={{marginBottom:20}}>
                       
                     </Typography>
@@ -338,6 +358,7 @@ const mapStateToProps = ({ user }) => ({
   loading: user.loading,
   error: user.login.errorMessage,
   success: user.login.successMessage,
+  isAuthenticated: user.isAuthenticated,
 });
 
 

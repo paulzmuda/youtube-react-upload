@@ -1,4 +1,4 @@
-import { initGapi } from '../utils/gapi-client';
+import { handleAuthClick } from './gapi';
 import { auth, storageKey, signInWithGoogle } from '../utils/auth';
 // import { addAlert } from './alerts';
 
@@ -78,12 +78,13 @@ export function handleSignOut() { // HOW DO I INVALIDATE TOKEN AT AUTH0???
   return (dispatch) => {
     console.log('handle sign out')
     dispatch(requestLogout()); // UI changes only
-    auth.signOut().then(() => {
-      dispatch(handleNonUser()); // this.setState({ uid: null }); // DISPATCH DISPATCH convert this into redux store
-    }).catch((error)=> {
-      dispatch(handleNonUser());
-      console.log(error);
-    });
+    dispatch(handleAuthClick());
+    // auth.signOut().then(() => {
+    //   dispatch(handleNonUser()); // this.setState({ uid: null }); // DISPATCH DISPATCH convert this into redux store
+    // }).catch((error)=> {
+    //   dispatch(handleNonUser());
+    //   console.log(error);
+    // });
     
   };
 }
@@ -110,10 +111,11 @@ export function handleSignIn(creds) {
     dispatch(requestLogin()); // UI changes only
     // auth server
     try {
-      await signInWithGoogle();
+      dispatch(handleAuthClick());
       // then basically dont do anything (none of the below) because
       // we have a listener for onAuthStateChanged in the AppRouter!!!
     } catch (e) {
+      console.log(e);
       console.log('--------------------------------------------');
       console.log('need to DISPATCH AN ERROR MESSAGE');
       console.log(e.code);
