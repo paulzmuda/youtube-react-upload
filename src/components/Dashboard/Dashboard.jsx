@@ -24,7 +24,6 @@ import Zoom from '@material-ui/core/Zoom';
 // send form
 import { connect } from 'react-redux';
 import { handleSignOut } from '../../actions/user';
-import { testGapi } from '../../actions/gapi';
 
 
 // import test from '../../../images/test.png';  <img src={test} style={{width:155}}/>
@@ -65,7 +64,8 @@ class Dashboard extends React.Component {
   }
 
   test() {
-      this.props.dispatch(testGapi());
+      // getGoogleUser();
+      console.log('this button disabled for now')
   }
 
   componentDidMount(){
@@ -76,13 +76,11 @@ class Dashboard extends React.Component {
     const { classes } = this.props;
     return (
           <Grid container 
-            style={{position: "absolute", top: "0px", left: "0px", width: '100%', height: '100%'}}
+            // style={{position: "absolute", top: "0px", left: "0px", width: '100%', height: '100%'}}
             justify='center'
             alignItems='center'  
           >
             <Grid item xs={12}>
-                <Button onClick={this.logout}>Logout</Button>
-                <Button onClick={this.test}>Test GAPI</Button>
               <center>
               
                 <Typography 

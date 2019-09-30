@@ -153,7 +153,7 @@ module.exports = {
   },
 
   resolve: {
-    // alias: { 'react-dom': '@hot-loader/react-dom'  },
+    alias: { 'react-dom': '@hot-loader/react-dom'  },
     extensions: ['.js', '.jsx'],
     modules: [path.join(__dirname, "node_modules")]
   }

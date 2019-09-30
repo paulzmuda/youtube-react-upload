@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { amber, grey, blue, red } from "@material-ui/core/colors";
-// import Header from "./Header/Header"; // import Footer from './Footer/Footer';  // import Button from 'material-ui/Button'; // import SimpleSnackbar from './SimpleSnackbar';
+import Header from "./Header/Header"; // import Footer from './Footer/Footer';  // import Button from 'material-ui/Button'; // import SimpleSnackbar from './SimpleSnackbar';
 // import LoadingModal from "./LoadingModal";
 // import ErrorDisplay from './Error';
 
@@ -50,17 +50,13 @@ class App extends React.Component {
 		this.goTo = this.goTo.bind(this);
 	}
 
-	componentWillMount() {
-		// this.props.dispatch(initAllCarriers());
-	}
-
 	render() {
 		return (
 			<MuiThemeProvider theme={theme}>
 				
 					{/* <LoadingModal/> */}
 					{/* <ErrorDisplay /> */}
-					{/* <Header goTo={this.goTo} match={this.props.match} /> */}
+					<Header goTo={this.goTo} match={this.props.match} />
 					{React.cloneElement(this.props.children, this.props)}
 					{/* <SimpleSnackbar /> */}{" "}
 					{/*<Footer goTo={this.goTo} pathname={this.props.location.pathname}/>*/}

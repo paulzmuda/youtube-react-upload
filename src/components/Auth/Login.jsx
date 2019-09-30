@@ -341,7 +341,7 @@ class Login extends React.Component {
 
             <div style={{position: 'fixed', bottom: 0, width: '100%'}}>
               <center>
-                <Typography variant="subtitle1" style={{ fontSize: 12, fontWeight: 100 }}><i>Copyright &copy; {(new Date()).getFullYear()} <a href="https://airridelogistics.com" target="_blank" style={{ fontSize: 12, fontWeight: 100 }}>AirRide Logistics, Inc</a>. All Rights Reserved.</i></Typography>
+                {/* <Typography variant="subtitle1" style={{ fontSize: 12, fontWeight: 100 }}><i>footer</i></Typography> */}
               </center>
             </div>
           </Grid>

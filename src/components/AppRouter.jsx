@@ -10,10 +10,9 @@ import { Route, Router, Redirect, Switch } from 'react-router-dom';
 import { connect, Provider } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-// auth 0
-import { app, auth, storageKey, handleGoogleToken } from '../utils/auth';
-import { loadApi } from '../actions/gapi';
-import { handleReceivedUser, handleNonUser } from '../actions/user';
+// google api
+import { loadGoogleApi, checkSigninStatus, GoogleAuth } from '../utils/google-auth';
+import { handleReceivedUser, handleNonUser, updateSigninStatus } from '../actions/user';
 
 // View Structure
 import App from './App';
@@ -29,7 +28,7 @@ const PrivateRoute = ({ component: Component, isAuthenticated: isAuthenticated, 
   console.log(isAuthenticated),
   <Route
     {...rest} render={props => (
-        isAuthenticated ? (
+      isAuthenticated ? (
           <App {...props}><Component {...props} /></App>
         ) : (
           <Redirect to='/login' />
@@ -42,29 +41,19 @@ class AppRouter extends React.Component {
 
   constructor(props) {
 		super(props);
-		// this.goTo = this.goTo.bind(this);
 		this.state = {
-			uid: null,
+			authReady: false,
 		}
   }
   
-  // // provider.addScope('');
-// provider.addScope('');
-// provider.addScope('');
-// provider.addScope('');
-// provider.addScope('');
-
-  
-
-
-
-
-  componentDidMount() {
-    this.props.dispatch(loadApi());
+  async componentDidMount() {
+    await loadGoogleApi((status) => {
+      this.setState({
+        authReady: status,
+      });
+      this.props.dispatch(updateSigninStatus()); // GoogleAuth.isSignedIn.listen(this.props.dispatch(updateSigninStatus()));
+    });
   }
-
-  
-
 
   // initClient = () => {
   //   // 2. Initialize the JavaScript client library.
@@ -94,23 +83,6 @@ class AppRouter extends React.Component {
   // };
 
 
-
-
-  
-
-
-
-
-
-  
-  componentWillMount() {
-    console.log('AppRouter: Will Mount')
-  }
-
-    // componentDidMount() {
-
-  // }
-
   // async componentDidMount() {
   //   // const { from } = history.location.pathname || { from: { pathname: '/dashboard' } }
   //   console.log('AppRouter: Did Mount');
@@ -137,9 +109,9 @@ class AppRouter extends React.Component {
 
   // }
   
-	componentWillUnmount() {
-		this.mounted = false;
-  }
+	// componentWillUnmount() {
+	// 	this.mounted = false;
+  // }
   
   // isAuthenticated() {
   //   // await isAuthenticated();
@@ -153,16 +125,33 @@ class AppRouter extends React.Component {
   // }
 
   render() {
+    console.log('is component did mount loading function? ');
+    console.log(this.state.authReady);
+    if(!this.state.authReady) {
+      return (<div>loading...</div>);
+    }
     console.log('AppRouter: Render');
-    const authHandler = { auth, isAuthenticated: this.props.user.isAuthenticated, mounted: this.mounted };
+    // const googleSigninStatus = GoogleAuth.isSignedIn.get();
+    // if(googleSigninStatus) {
+    //   this.props.dispatch(handleReceivedUser());
+    // }
+
+    const isAuthenticated = this.props.user.isAuthenticated;
+    const authHandler = { isAuthenticated: isAuthenticated, mounted: this.mounted };
+
+    // console.log('google auth is auth?')
+    // console.log(googleSigninStatus);
+    console.log('props auth is auth?')
     console.log(this.props.user.isAuthenticated);
+    console.log('now the final value')
+    console.log(isAuthenticated);
     return (
       // <Provider store={this.props.store}>
       <Router history={history}>
         <Switch>
         <Route
             path="/" exact render={props => (
-                !this.props.user.isAuthenticated 
+                !isAuthenticated 
                 ? (
                   <Redirect to="/login" /> // window.location.assign('http://localhost:8802/login')
                 ) : (
@@ -173,7 +162,7 @@ class AppRouter extends React.Component {
           <Route path="/login" exact render={props => (<Login authHandler={authHandler} {...props} />)} />
           <Route
             path="/login" render={props => (
-              !this.props.user.isAuthenticated
+              !isAuthenticated
               ?
                 (<Login authHandler={authHandler} {...props} />)
               :
@@ -182,13 +171,13 @@ class AppRouter extends React.Component {
           />
 
           
-          <PrivateRoute exact path="/dashboard" component={Dashboard} isAuthenticated={this.props.user.isAuthenticated} />
-          <PrivateRoute exact path="/upload" component={Upload} isAuthenticated={this.props.user.isAuthenticated} />
+          <PrivateRoute exact path="/dashboard" component={Dashboard} isAuthenticated={isAuthenticated} />
+          <PrivateRoute exact path="/upload" component={Upload} isAuthenticated={isAuthenticated} />
           
           {/* any unexpected route */}
           <Route
             render={props => (
-                !this.props.user.isAuthenticated 
+                !isAuthenticated 
                 ? (
                   <Redirect to="/login" /> // window.location.assign('http://localhost:8802/login')
                 ) : (
