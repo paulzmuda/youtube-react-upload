@@ -10,6 +10,9 @@ import { Redirect, withRouter} from 'react-router-dom';
 
 import { handleSignIn } from '../../actions/user';
 
+import FullPageLoading from '../Dialogs/FullPageLoading';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
 // import { Link } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
@@ -155,6 +158,10 @@ class Login extends React.Component {
     const { from } = this.props.location.state || '/';
     const { redirectToReferrer } = this.state;
     
+    if(this.props.loading) {
+      return (<FullPageLoading />);
+    }
+
     return (
          <Grid container 
             style={{position: "absolute", top: "0px", left: "0px", width: '100%', height: '100%'}}
@@ -165,15 +172,6 @@ class Login extends React.Component {
                 (redirectToReferrer || this.props.isAuthenticated) && (<Redirect to={from || '/dashboard'}/>)
             }
 
-            {/* <Hidden smDown>
-            <Grid 
-              item 
-              lg={6} md={6}
-              style={{backgroundColor: 'black'}}
-            >
-              filler text lorem ipsum blah blah blah
-            </Grid>
-            </Hidden> */}
 
             <Grid item
               lg={12} md={12} sm={12} xs={12}
@@ -214,13 +212,13 @@ class Login extends React.Component {
                           
                         >
                           {
-                              (this.props.loading ?
-                                      'LOADING' : null) ||
-                              (this.props.error ?
-                                      this.props.error : null) ||
-                                (this.props.success ?
-                                      this.props.success : null) ||
-                              'Default text'       
+                              // (this.props.loading ?
+                              //         'LOADING' : null) ||
+                              // (this.props.error ?
+                              //         this.props.error : null) ||
+                              //   (this.props.success ?
+                              //         this.props.success : null) ||
+                              // 'Default text'       
                           }
                         </Grid>
                         <Grid item
@@ -236,101 +234,28 @@ class Login extends React.Component {
                       item 
                       lg={12} md={12} sm={12} xs={12}
                     >
-                      <div id="my-signIn"></div>
-                    <Typography variant="h4" gutterBottom style={{marginBottom:20}}>
-                      
-                    </Typography>
-                    <Paper className={classes.root} style={{ margin: 10, padding: 10}}>
-                      <Typography variant="h6" component="h3">
-                      </Typography>
-                      <Typography variant="subtitle1" style={{marginBottom: 8}}>
-                      </Typography>
-                      <Grid 
-                        container 
-                        justify='flex-start'
-                        alignItems='flex-start'
-                      >
-
- 
-                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                          <FormControl fullWidth>
-                            <Input disabled={false} error={ !this.state.email.valid }
-                              name={"email"}
-                              onChange={this.handleEmail}
-                              value={this.state.email.value}
-                              classes={{
-                                underline: classes.cssUnderline,
-                              }}
-                              // style={{color: 'black', margin: 5}}
-                            />
-                            <FormHelperText>
-                              {
-                                ((!this.state.email.valid && this.state.email.value.length > 0) ?
-                                  'E.g. your_name@abctransport.com' : null) ||
-                                // (this.props.registrationGeneral.emailAlreadyExists ?
-                                //     'This email doesn\'t exist with us' : null) ||
-                                'Email Address'
-                              }
-                            </FormHelperText>
-                          </FormControl>
+                    <Paper className={classes.root} style={{ margin: 10, padding: 10}} onClick={e => { this.handleSignIn()}}>
+                        <Grid 
+                          container 
+                          justify='flex-start'
+                          alignItems='flex-start'
+                        >
+                          <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+                            <AccountCircle style={{ height: 48, fontSize: 48, color: '#909090'}} />
+                          </Grid>
+                          <Grid item xs={8} sm={6} md={8} lg={8} xl={8}>
+                            <Typography variant="subtitle1" style={{marginBottom: 8}}>
+                              sign in with google
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+                            <KeyboardArrowRight style={{ height: 48, fontSize: 48, color: '#909090'}} />
+                          </Grid>
                         </Grid>
-
-
-                        <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                          <FormControl fullWidth>
-                            <Input disabled={false} error={ !this.state.password.valid.matches || this.state.error == 'auth/wrong-password'  }
-                              name={"password"}
-                              type="password"
-                              onChange={this.handlePassword}
-                              value={this.state.password.value}
-                              classes={{
-                                underline: classes.cssUnderline,
-                              }}
-                              // style={{color: 'black', margin: 5}}
-                            />
-                            <FormHelperText>Password</FormHelperText>
-                          </FormControl>
-                        </Grid>
-                      </Grid>
-
-
-
-    <br />
                       </Paper>
 
                     </Grid>
-                    <Grid 
-                      item 
-                      lg={12} md={12} sm={12} xs={12}
-                    >
-                      <Grid 
-                        container 
-                        direction='row'
-                        justify='space-between'
-                        alignItems='flex-start'
-                        style={{paddingLeft:20, paddingRight: 20}}
-                      >
-                        <Grid item >
-                        </Grid>
-                        <Grid item
-                        >
-                              <Button 
-                                variant="outlined" 
-                                color="primary" 
-                                className={classes.button} 
-                                style={{marginTop:5, marginLeft: 0, align:'right'}}
-                                onClick={
-                                    e => {
-                                            this.handleSignIn();
-                                         }
-                                }
-                              >
-                                Login
-                              </Button>
-                        </Grid>
 
-                      </Grid>
-                    </Grid>
                   </Grid>
                 </Grid>
 

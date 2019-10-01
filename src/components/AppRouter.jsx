@@ -22,6 +22,9 @@ import Login from './Auth/Login';
 import Dashboard from './Dashboard/Dashboard';
 import Upload from './Upload/Upload';
 
+// UI Element Components
+import FullPageLoading from './Dialogs/FullPageLoading';
+
 
 // if logged in
 const PrivateRoute = ({ component: Component, isAuthenticated: isAuthenticated, ...rest }) => (
@@ -57,7 +60,6 @@ class AppRouter extends React.Component {
 
   // initClient = () => {
   //   // 2. Initialize the JavaScript client library.
-    
   //   // window.gapi.client
   //   //   .init({
   //   //     apiKey: process.env.GOOGLE_API_KEY,
@@ -81,7 +83,6 @@ class AppRouter extends React.Component {
   //   //   // console.log('Error: ' + reason.result.error.message);
   //   // });
   // };
-
 
   // async componentDidMount() {
   //   // const { from } = history.location.pathname || { from: { pathname: '/dashboard' } }
@@ -108,43 +109,16 @@ class AppRouter extends React.Component {
 
 
   // }
-  
-	// componentWillUnmount() {
-	// 	this.mounted = false;
-  // }
-  
-  // isAuthenticated() {
-  //   // await isAuthenticated();
-  //   if(this.mounted) {
-  //     console.log(this.auth2.isSignedIn.get());
-  //     console.log('aadflkjasdf;kjasdf;lkjasdf;lasjdfl;kja')
-  //     return this.auth2.isSignedIn.get();
-  //   }
-  //   console.log('blah')
-  //   return false; // return GoogleAuth.isSignedIn.get();
-  // }
 
   render() {
-    console.log('is component did mount loading function? ');
-    console.log(this.state.authReady);
     if(!this.state.authReady) {
-      return (<div>loading...</div>);
+      return (<FullPageLoading />);
     }
     console.log('AppRouter: Render');
-    // const googleSigninStatus = GoogleAuth.isSignedIn.get();
-    // if(googleSigninStatus) {
-    //   this.props.dispatch(handleReceivedUser());
-    // }
 
     const isAuthenticated = this.props.user.isAuthenticated;
     const authHandler = { isAuthenticated: isAuthenticated, mounted: this.mounted };
 
-    // console.log('google auth is auth?')
-    // console.log(googleSigninStatus);
-    console.log('props auth is auth?')
-    console.log(this.props.user.isAuthenticated);
-    console.log('now the final value')
-    console.log(isAuthenticated);
     return (
       // <Provider store={this.props.store}>
       <Router history={history}>

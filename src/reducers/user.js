@@ -8,6 +8,7 @@ const initialState = {
     firstName: '',
     lastName: '',
     email: '',
+    avatar: '',
 };
 
 export default (state = initialState, action) => {
@@ -77,6 +78,7 @@ export default (state = initialState, action) => {
                     firstName: action.firstName,
                     lastName: action.lastName,
                     email: action.email,
+                    avatar: action.avatar,
             });
 
         case 'USER_INIT_ERROR':

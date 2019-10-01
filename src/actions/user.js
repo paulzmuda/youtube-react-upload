@@ -45,40 +45,18 @@ export function userLoading(loading) {
 export function updateSigninStatus() {
   
   return async (dispatch) => {
-    console.log('as;lfkjas;dlk111111!!!!!!!!!');
-    console.log(GoogleAuth.isSignedIn.get());
     // let user = GoogleAuth.currentUser.get();
     // let isAuthorized = user.hasGrantedScopes(scopes);
-    // console.log('sign in status listener hit');
-    // console.log(user);
     // if (isAuthorized) {
       if(GoogleAuth.isSignedIn.get()) {
-        console.log('LOGIN')
-      dispatch({type: 'LOGIN_SUCCESS'});
-      // let first = user.w3.ofa
-      // let last = user.w3.wea
-      // let full = first+last
-      // let display = user.w3.ig
-      // let fullName = full.toLowerCase();
-      // this.setState({ 
-      //   isAuthorized: true,
-      //   user: fullName,
-      //   userDisplay: display
-      // })
-      // console.log(this.state.isAuthorized)
-      // document.getElementById('sign-in-or-out-button').innerHTML = 'Sign out'
+        await dispatch(initUser());
+        dispatch({type: 'LOGIN_SUCCESS'});
+        
       // document.getElementById('revoke-access-button').style.display = 'inline-block'
       // document.getElementById('auth-status').innerHTML = `Welcome ${user.w3.ofa}, you are currently signed in and have granted access to this app.`
     } else {
-      console.log('LOGOUT')
       dispatch({type: 'LOGOUT_SUCCESS'});
-      // this.setState({
-      //   isAuthorized: false,
-      //   user: '',
-      //   userDisplay: ''
-      // })
-      // console.log(this.state.isAuthorized)
-      // document.getElementById('sign-in-or-out-button').innerHTML = 'Sign in'
+
       // document.getElementById('revoke-access-button').style.display = 'none'
       // document.getElementById('auth-status').innerHTML = 'You have not authorized this app or you are signed out.'
     }
@@ -91,18 +69,24 @@ export function initUser() {
     try {
 
       dispatch({type: 'USER_INIT_LOADING', loading: true});
-      // const response = await initGapi(); // const {user, carriers} = response.body;
-      const response = await getGoogleUser();
-      console.log('api response here');
-      console.log(response.body);
-      console.log('----respone above----');
-      const userData = { firstName: 'test1', lastName: 'test2', email: 'test3' };
+
+      const GoogleUser = GoogleAuth.currentUser.get();
+      const BasicProfile = GoogleUser.getBasicProfile();
+
+      // https://developers.google.com/identity/sign-in/web/reference#googleusergetbasicprofile
+      const userObject = {
+        userId: BasicProfile.getId(),
+        firstName: BasicProfile.getGivenName(),
+        lastName: BasicProfile.getFamilyName(),
+        email: BasicProfile.getEmail(),
+        avatar: BasicProfile.getImageUrl()
+      }
+
       // user store
-      dispatch({type: 'USER_INIT_SUCCESS', firstName: userData.firstName, lastName: userData.lastName, email: userData.email});
+      dispatch({type: 'USER_INIT_SUCCESS', ...userObject});
       dispatch({type: 'LOGIN_MESSAGES_RESET'});
       dispatch({type: 'USER_INIT_LOADING', loading: false});
 
-      // await dispatch(carrierInit(response.body.carriers));
     } 
     catch(e){ 
       throw e;
@@ -161,9 +145,9 @@ export function handleSignIn() {
     try {
       GoogleAuth.signIn().then(()=>{
         console.log('signing in');
-        // dispatch(updateSigninStatus());
+        dispatch(updateSigninStatus());
         dispatch({type: 'LOGIN_SUCCESS'})
-        dispatch(handleReceivedUser());
+        // dispatch(handleReceivedUser());
       }).catch((error)=>{
         console.log(error);
       });

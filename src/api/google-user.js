@@ -1,21 +1,52 @@
 import request from 'superagent';
-import { GoogleAuth } from '../utils/google-auth.js';
+import { gapi, GoogleAuth } from '../utils/google-auth.js';
 
-export const getGoogleUser = async (carrierAssoc) => {
+// export const getGoogleUser = async () => {
+//   const user = GoogleAuth.currentUser.get();
+//   const accessToken = user.getAuthResponse().access_token;
+//   try {
+//     return await request.get('https://people.googleapis.com/v1/people/me?requestMask.includeField=person.names')
+//       .set('Content-Type', 'application/json')
+//       .set('authorization', 'Bearer ' + accessToken)
+//       .set('Accept', 'application/json')
+//       .send()
+//       .accept('application/json');
+//   }
+//   catch (err) {
+//     throw err;
+//   }
+// };
+
+export const getGoogleUser = async () => {
   const user = GoogleAuth.currentUser.get();
-  const accessToken = user.getAuthResponse().access_token;
+
+
   try {
-    return await request.get('https://people.googleapis.com/v1/people/me?requestMask.includeField=person.names')
-      .set('Content-Type', 'application/json')
-      .set('authorization', 'Bearer ' + accessToken)
-      .set('Accept', 'application/json')
-      .send()
-      .accept('application/json');
+    return await user.getBasicProfile();
   }
   catch (err) {
     throw err;
   }
 };
+
+
+
+// export const getGoogleProfilePicture = async (userId) => {
+//   const user = GoogleAuth.currentUser.get();
+//   const accessToken = user.getAuthResponse().access_token;
+//   try {
+//     return await request.get('https://www.googleapis.com/plus/v1/people/' + userId + '?key=' + process.env.GOOGLE_API_KEY)
+//       .set('Content-Type', 'application/json')
+//       .set('authorization', 'Bearer ' + accessToken)
+//       .set('Accept', 'application/json')
+//       .send()
+//       .accept('application/json');
+//   }
+//   catch (err) {
+//     throw err;
+//   }
+// }
+
 
 //         // https://www.html5rocks.com/en/tutorials/cors/
 //         // https://blog.416serg.me/building-an-app-using-google-sheets-api-react-d69681d22ce1
