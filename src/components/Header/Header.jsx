@@ -28,6 +28,16 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
   },
+  headerAvatar: {
+    height: 32, 
+    width: 32, 
+    marginRight: 16, 
+    borderRadius: '50%', 
+    overflow: 'hidden',
+    '&:hover': {
+      cursor: 'pointer',
+    }
+  }
 }));
 
 export default function Header() {
@@ -72,7 +82,7 @@ export default function Header() {
                   onClick={handleMenu}
                   aria-controls="menu-appbar"
                   aria-haspopup="true"
-                  style={{ height: 32, width: 32, marginRight: 16, borderRadius: '50%', overflow: 'hidden' }}
+                  className={classes.headerAvatar}
                 />
               <Menu
                 id="menu-appbar"

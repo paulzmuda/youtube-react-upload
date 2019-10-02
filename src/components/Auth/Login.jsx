@@ -57,6 +57,11 @@ const styles = theme => ({
   },
   root: theme.root,
   card: theme.card,
+  signInContainer: {
+    '&:hover': {
+      cursor: 'pointer',
+    }
+  }
   // cssUnderline: {
   //   borderBottomColor: '#ffffff',
   //   '&:after': {
@@ -234,7 +239,7 @@ class Login extends React.Component {
                       item 
                       lg={12} md={12} sm={12} xs={12}
                     >
-                    <Paper className={classes.root} style={{ margin: 10, padding: 10}} onClick={e => { this.handleSignIn()}}>
+                    <Paper className={classes.signInContainer} style={{ margin: 10, padding: 10}} onClick={e => { this.handleSignIn()}}>
                         <Grid 
                           container 
                           justify='flex-start'

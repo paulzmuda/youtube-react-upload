@@ -43,31 +43,26 @@ export function userLoading(loading) {
 }
 
 export function updateSigninStatus() {
-  
   return async (dispatch) => {
-    // let user = GoogleAuth.currentUser.get();
-    // let isAuthorized = user.hasGrantedScopes(scopes);
-    // if (isAuthorized) {
-      if(GoogleAuth.isSignedIn.get()) {
+    const user = GoogleAuth.currentUser.get();
+    const scopeCheck = user.hasGrantedScopes(scopes);
+    const signedIn = GoogleAuth.isSignedIn.get();
+
+      if(scopeCheck && signedIn) {
         await dispatch(initUser());
         dispatch({type: 'LOGIN_SUCCESS'});
         
-      // document.getElementById('revoke-access-button').style.display = 'inline-block'
-      // document.getElementById('auth-status').innerHTML = `Welcome ${user.w3.ofa}, you are currently signed in and have granted access to this app.`
     } else {
-      dispatch({type: 'LOGOUT_SUCCESS'});
-
-      // document.getElementById('revoke-access-button').style.display = 'none'
-      // document.getElementById('auth-status').innerHTML = 'You have not authorized this app or you are signed out.'
+      dispatch(handleSignOut()); 
+      
     }
+
   }
 }
 
 export function initUser() {
   return async (dispatch) => {
-    console.log('RUNNING INITUSER NOW')
     try {
-
       dispatch({type: 'USER_INIT_LOADING', loading: true});
 
       const GoogleUser = GoogleAuth.currentUser.get();
@@ -85,14 +80,16 @@ export function initUser() {
       // user store
       dispatch({type: 'USER_INIT_SUCCESS', ...userObject});
       dispatch({type: 'LOGIN_MESSAGES_RESET'});
-      dispatch({type: 'USER_INIT_LOADING', loading: false});
+      
 
     } 
     catch(e){ 
+      dispatch(handleSignOut()); 
+      // show an alert showing there was a problem loading the user
       throw e;
     } 
     finally {
-      // dispatch(carrierLoading(true));dispatch(carrierLoading(false));
+      dispatch({type: 'USER_INIT_LOADING', loading: false});
     }
   }
 }
@@ -100,8 +97,7 @@ export function initUser() {
 export function handleNonUser() {
   return (dispatch) => {
     console.log('handle non user');
-    // reset auth, something bad happened that led us here
-    // GoogleAuth.signOut(); 
+    // logout app reset cleanup here
     dispatch(successLogout());
   }
 }
@@ -130,11 +126,16 @@ export function handleReceivedUser() {
     catch (e) {
       console.log(e);
       await dispatch(handleSignOut());
+      // show an alert showing there was a problem loading the user
+      // consider passing errors to "handle non user" cleanup func
       throw e;
     }
-    // window.localStorage.setItem(storageKey, user.uid);
+    finally {
+      
+    }
+    // I NEED TO MOVE THIS EITHER TO `FINALLY` - ABOVE OR INSIDE THE `TRY`
     dispatch(receiveLogin());
-    dispatch({type: 'USER_INIT_LOADING', loading: false});
+    // dispatch({type: 'USER_INIT_LOADING', loading: false}); // redundant, check and remove
   }
 }
 
@@ -144,12 +145,12 @@ export function handleSignIn() {
     // auth server
     try {
       GoogleAuth.signIn().then(()=>{
-        console.log('signing in');
         dispatch(updateSigninStatus());
-        dispatch({type: 'LOGIN_SUCCESS'})
         // dispatch(handleReceivedUser());
+
       }).catch((error)=>{
         console.log(error);
+        throw error;
       });
                 // then basically dont do anything (none of the below) because
                 // we have a listener for onAuthStateChanged in the AppRouter!!!
