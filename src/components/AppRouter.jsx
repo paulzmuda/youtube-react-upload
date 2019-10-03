@@ -26,6 +26,7 @@ import Upload from './Upload/Upload';
 import FullPageLoading from './Dialogs/FullPageLoading';
 
 
+
 // if logged in
 const PrivateRoute = ({ component: Component, isAuthenticated: isAuthenticated, ...rest }) => (
   console.log(isAuthenticated),

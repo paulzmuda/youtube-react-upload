@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { lighten, makeStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -10,12 +10,23 @@ const useStyles = makeStyles({
   },
 });
 
+const YoutubeLinearProgress = withStyles({
+  root: {
+    // height: 3,
+    backgroundColor: lighten('#FF0000', 0.5),
+  },
+  bar: {
+    backgroundColor: '#FF0000',
+  },
+})(LinearProgress);
+
+
 export default function FullPageLoading() {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <LinearProgress variant="query" />
+      <YoutubeLinearProgress variant="query" color="primary" />
       <Grid container 
             style={{position: "absolute", top: "0px", left: "0px", width: '100%', height: '100%'}}
             justify='center'
