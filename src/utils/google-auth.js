@@ -65,20 +65,19 @@ export async function loadGoogleApi(_callback) {
         GoogleAuth = gapi.auth2.getAuthInstance();
         return _callback(true);
       });
-    // GoogleAuth = await gapi.auth2.getAuthInstance();
-    // return await GoogleAuth.isSignedIn.get();
   });
 };
 
+export function revokeAccess() {
+  GoogleAuth.disconnect();
+}
+
 export async function checkSigninStatus() {
-    console.log('checkSigninStatus')
     if(typeof GoogleAuth === 'undefined') {
-      console.log('1')
       return await loadGoogleApi(async (status)=>{
         return await GoogleAuth.isSignedIn.get();
       });
     }
-    console.log('2')
     return await GoogleAuth.isSignedIn.get();
 
     let user = GoogleAuth.currentUser.get();

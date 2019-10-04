@@ -12,7 +12,6 @@ const useStyles = makeStyles({
 
 const YoutubeLinearProgress = withStyles({
   root: {
-    // height: 3,
     backgroundColor: lighten('#FF0000', 0.5),
   },
   bar: {
@@ -21,7 +20,7 @@ const YoutubeLinearProgress = withStyles({
 })(LinearProgress);
 
 
-export default function FullPageLoading() {
+export default () => {
   const classes = useStyles();
 
   return (

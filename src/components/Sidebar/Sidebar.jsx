@@ -1,9 +1,9 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -25,59 +25,92 @@ const useStyles = makeStyles((theme) =>
       width: drawerWidth,
       flexShrink: 0,
     },
-    drawerPaper: {
+    drawerOpen: {
       width: drawerWidth,
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    },
+    drawerClose: {
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      overflowX: 'hidden',
+      width: theme.spacing(7) + 1,
+      [theme.breakpoints.up('sm')]: {
+        width: theme.spacing(9) + 1,
+      },
     },
     toolbar: theme.mixins.toolbar,
     avatar: {
-        height: 108, 
-        width: 108, 
         margin: '0 auto',
         marginBottom: 16,
         padding: 16,
         borderRadius: '50%', 
         overflow: 'hidden',
     },
+    avatarFull: {
+      height: 108, 
+      width: 108, 
+    },
+    avatarShrink: {
+      height: 36,
+      width: 36,
+    },
     listItem: {
         '&:hover span, &:hover svg': {
             color: '#c4302b',
-        }
+        },
+    },
+    listItemIcon: {
+      paddingLeft: 8,
     },
     primaryText: {
         color: '#626363',
         fontSize: 14,
-    }
+    },
   }),
 );
 
 export default function Sidebar() {
     const classes = useStyles();
     const avatar = useSelector(state => state.user.avatar);
+    const open = useSelector(state => state.ui.drawerOpen);
+
     return (
-    <Drawer
-        className={classes.drawer}
+      <Drawer
         variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
         classes={{
-          paper: classes.drawerPaper,
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
         }}
+        open={open}
       >
         <div className={classes.toolbar} />
-        <img src={avatar} className={classes.avatar} />
-        <Typography variant="subtitle2" style={{fontSize: 12, paddingLeft: 18, color: '#909090', fontWeight: 700}}>Channel</Typography>
+        <img src={avatar} className={`${classes.avatar} ${open ? classes.avatarFull : classes.avatarShrink}`} />
+        {open ? <Typography variant="subtitle2" style={{fontSize: 12, paddingLeft: 26, color: '#909090', fontWeight: 700}}>Channel</Typography> : null}
         <List>
             <ListItem button className={classes.listItem}>
-              <ListItemIcon><DashboardIcon /></ListItemIcon>
+              <ListItemIcon className={classes.listItemIcon}><DashboardIcon /></ListItemIcon>
               <ListItemText primary={'Dashboard'} primaryTypographyProps={{variant: 'body2'}} classes={{primary: classes.primaryText }} /> {/* https://material-ui.com/api/list-item/ */}
             </ListItem>
             <ListItem button className={classes.listItem}>
-            <ListItemIcon><VideosIcon /></ListItemIcon>
+            <ListItemIcon className={classes.listItemIcon}><VideosIcon /></ListItemIcon>
             <ListItemText primary={'Videos'} primaryTypographyProps={{variant: 'body2'}} classes={{primary: classes.primaryText }} />
           </ListItem>
         </List>
         <Divider />
         <List>
             <ListItem button className={classes.listItem}>
-              <ListItemIcon><SettingsIcon /></ListItemIcon>
+              <ListItemIcon className={classes.listItemIcon}><SettingsIcon /></ListItemIcon>
               <ListItemText primary={'Settings'} primaryTypographyProps={{variant: 'body2'}} classes={{primary: classes.primaryText }} />
             </ListItem>
 
@@ -85,7 +118,3 @@ export default function Sidebar() {
       </Drawer>
     );
 }
-
-// to-do:
-// mini variant drawer
-// https://material-ui.com/components/drawers/#MiniDrawer.js

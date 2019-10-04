@@ -13,7 +13,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case 'LOGIN_REQUEST':
+        case 'LOGIN_REQUESTED_PENDING':
             return Object.assign({}, state, {
                 ...state,
                 loading: true,
@@ -42,7 +42,7 @@ export default (state = initialState, action) => {
                 }
             });
 
-        case 'LOGOUT_REQUEST':
+        case 'LOGOUT_REQUESTED_PENDING':
             return Object.assign({}, state, {
                 ...state,
                 loading: true,

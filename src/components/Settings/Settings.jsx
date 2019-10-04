@@ -1,7 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import { useDispatch } from 'react-redux';
+import { handleInvalidateAccess } from '../../actions/user';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
   pageContainer: {
@@ -18,6 +21,10 @@ const useStyles = makeStyles(theme => ({
 
 export default () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const invalidateUser = () => {
+    dispatch(handleInvalidateAccess());
+  }
   return (
     <Grid container 
       className={classes.pageContainer}
@@ -33,16 +40,9 @@ export default () => {
               className={classes.backgroundText}
               style={{ fontSize: 18}}
           >
-            Dashboard
+            Settings
           </Typography>
-          <Typography 
-              variant="h2" 
-              gutterBottom 
-              className={classes.backgroundText}
-              style={{ fontSize: 46}}
-          >
-            Blank Page
-          </Typography>                   
+          <Button onClick={invalidateUser}>Revoke App Access to your Data</Button>
         </center>
       </Grid>
     </Grid>

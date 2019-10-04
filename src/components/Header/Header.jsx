@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { handleSignOut } from '../../actions/user';
+import { openCloseDrawer } from '../../actions/ui';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -26,7 +27,6 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
   },
-  // toolbar: theme.mixins.toolbar,
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     boxShadow: '0px 1px 4px 1px rgba(0,0,0,0.1)',
@@ -53,6 +53,7 @@ const useStyles = makeStyles(theme => ({
   },
   menuIcon: {
     paddingRight: 16,
+    fontSize: 40,
     color: '#909090',
     transform: 'rotate(0.03deg)',
   }
@@ -62,14 +63,12 @@ export default function Header() {
     const dispatch = useDispatch();
     const classes = useStyles();
     const user = useSelector(state => state.user);
-
-    const [auth, setAuth] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
-    const handleChange = event => {
-        setAuth(event.target.checked);
-    };
+    const handleDrawer = () => {
+      dispatch(openCloseDrawer());
+    }
 
     const handleMenu = event => {
         setAnchorEl(event.currentTarget);
@@ -88,7 +87,13 @@ export default function Header() {
     <div className={classes.root}>
       <AppBar position="fixed" color="inherit" className={classes.appBar}>
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          <IconButton 
+            edge="start" 
+            className={classes.menuButton} 
+            color="inherit" 
+            aria-label="menu"
+            onClick={handleDrawer}
+          >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>

@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
 
-// USER HANDLING
+import ui from './ui';
 import user from './user';
 
 
 export default combineReducers({
+  ui,
   user
 });

@@ -3,7 +3,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import store from './store';
 import { Provider } from 'react-redux';
-import { ErrorReporter, deepForceUpdate } from './utils/dev';
+import { ErrorReporter, deepForceUpdate } from './utils/devtools';
 import AppRouter from './components/AppRouter';
 import { AppContainer } from 'react-hot-loader';
 

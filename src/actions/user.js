@@ -1,16 +1,13 @@
-import { handleAuthClick } from './gapi';
-import { GoogleAuth, signInWithGoogle, scopes } from '../utils/google-auth';
-import { getGoogleUser } from '../api/google-user';
-
+import { GoogleAuth, revokeAccess, signInWithGoogle, scopes } from '../utils/google-auth';
 // import { addAlert } from './alerts';
 
-function requestLogin(creds) {
+function loginPending(creds) {
   return {
-    type: 'LOGIN_REQUEST',
+    type: 'LOGIN_REQUESTED_PENDING',
   };
 }
 
-export function receiveLogin() {
+export function loginSuccess() {
   return {
     type: 'LOGIN_SUCCESS',
   };
@@ -23,13 +20,13 @@ function loginError(message) {
   };
 }
 
-function requestLogout() {
+function logoutPending() {
   return {
-    type: 'LOGOUT_REQUEST',
+    type: 'LOGOUT_REQUESTED_PENDING',
   };
 }
 
-export function successLogout() {
+export function logoutSuccess() {
   return {
     type: 'LOGOUT_SUCCESS',
   };
@@ -42,21 +39,31 @@ export function userLoading(loading) {
   };
 }
 
+export function handleSignIn() {
+  return async (dispatch) => {
+    dispatch(loginPending());
+    GoogleAuth.signIn().then(()=>{
+      dispatch(updateSigninStatus()); // dispatch(handleReceivedUser());
+    }).catch((error)=>{
+      dispatch(loginError(error)); // dispatch(handleNonUser());
+    });
+  };
+}
+
+
+//////////////////////////////////////////////////  MOVE THESE GOOGLE ACTIONS BACK TO GOOGLE-AUTH.JS
 export function updateSigninStatus() {
   return async (dispatch) => {
     const user = GoogleAuth.currentUser.get();
     const scopeCheck = user.hasGrantedScopes(scopes);
     const signedIn = GoogleAuth.isSignedIn.get();
-
+    // GoogleAuth.isSignedIn.listen(this.props.dispatch(updateSigninStatus()));
       if(scopeCheck && signedIn) {
         await dispatch(initUser());
         dispatch({type: 'LOGIN_SUCCESS'});
-        
     } else {
-      dispatch(handleSignOut()); 
-      
+      dispatch(handleSignOut());  
     }
-
   }
 }
 
@@ -86,6 +93,7 @@ export function initUser() {
     catch(e){ 
       dispatch(handleSignOut()); 
       // show an alert showing there was a problem loading the user
+      // already doing that in the calling function, need to re-write this entire flow.
       throw e;
     } 
     finally {
@@ -96,25 +104,33 @@ export function initUser() {
 
 export function handleNonUser() {
   return (dispatch) => {
-    console.log('handle non user');
     // logout app reset cleanup here
-    dispatch(successLogout());
+    dispatch(logoutSuccess());
   }
 }
 
 // Logs the user out
 export function handleSignOut() { // HOW DO I INVALIDATE TOKEN AT AUTH0???
   return (dispatch) => {
-    console.log('handle sign out')
-    dispatch(requestLogout()); // UI changes only
-    GoogleAuth.signOut().then(()=> {
-      console.log('signing out')
+    dispatch(logoutPending()); // UI changes only
+    return GoogleAuth.signOut().then(()=> {
       dispatch(handleNonUser());      
     }).catch((error) => {
       dispatch(handleNonUser());
-      console.log(error);
+      dispatch(loginError(error));
     });
   };
+}
+
+export function handleInvalidateAccess() {
+  return (dispatch) => {
+    // invalidation API call
+    revokeAccess();
+    // handle sign out
+    dispatch(handleNonUser());
+    // logout success with invalidation successful message?
+
+  }
 }
 
 export function handleReceivedUser() {
@@ -122,46 +138,13 @@ export function handleReceivedUser() {
     try {
       // dispatch({type: 'USER_LOADING', loading: true});
       await dispatch(initUser()); // get user info from Google
+      dispatch(loginSuccess());
     }
     catch (e) {
       console.log(e);
-      await dispatch(handleSignOut());
-      // show an alert showing there was a problem loading the user
-      // consider passing errors to "handle non user" cleanup func
+      dispatch(handleSignOut());
+      dispatch(loginError('There was a problem loading your information, please try signing in again.'));
       throw e;
     }
-    finally {
-      
-    }
-    // I NEED TO MOVE THIS EITHER TO `FINALLY` - ABOVE OR INSIDE THE `TRY`
-    dispatch(receiveLogin());
-    // dispatch({type: 'USER_INIT_LOADING', loading: false}); // redundant, check and remove
   }
-}
-
-export function handleSignIn() {
-  return async (dispatch) => {
-    dispatch(requestLogin()); // UI changes only
-    // auth server
-    try {
-      GoogleAuth.signIn().then(()=>{
-        dispatch(updateSigninStatus());
-        // dispatch(handleReceivedUser());
-
-      }).catch((error)=>{
-        console.log(error);
-        throw error;
-      });
-                // then basically dont do anything (none of the below) because
-                // we have a listener for onAuthStateChanged in the AppRouter!!!
-    } catch (e) {
-      console.log(e);
-      console.log('--------------------------------------------');
-      console.log('need to DISPATCH AN ERROR MESSAGE');
-      console.log(e.code);
-      dispatch(loginError(e.code));
-      console.log('--------------------------------------------');
-      return e;
-    }
-  };
 }

@@ -1,15 +1,14 @@
 import React from "react";
 import { withStyles } from '@material-ui/core/styles';
-
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import CssBaseline from '@material-ui/core/CssBaseline';
+
 import { amber, red } from "@material-ui/core/colors";
 
 import Header from "./Header/Header";
 import Sidebar from './Sidebar/Sidebar';
 // import LoadingModal from "./LoadingModal";
 // import ErrorDisplay from './Error';
-
-import { connect } from 'react-redux';
 
 // YouTube Colors
 // https://www.youtube.com/about/brand-resources/#logos-icons-colors
@@ -24,14 +23,13 @@ const theme = createMuiTheme({
 		useNextVariants: true,
 	},
 	palette: {
-		primary: { // primary : primary,
-			main: '#c4302b', // '#00B8CD', // '#29b6f6',
+		primary: {
+			main: '#c4302b',
 		  },
-		secondary: amber, //#039be5
+		secondary: amber,
 		error: red
 	},
 	root: {
-		// margin: "64px 0px 80px 0px",
 		display: 'flex',
 	},
 	card: {
@@ -43,33 +41,22 @@ const styles = theme => ({
 	// https://reactjs.org/docs/dom-elements.html#style
   });
 
-class App extends React.Component {
-	goTo(route) {
-		this.props.history.push(`${route}`);
+const App = (props) => {
+	const goTo = (route) => {
+		props.history.push(`${route}`);
 	}
-
-	constructor(props) {
-		super(props);
-		this.goTo = this.goTo.bind(this);
-	}
-
-	render() {
-		return (
-			<MuiThemeProvider theme={theme}>
-				
-					{/* <LoadingModal/> */}
-					{/* <ErrorDisplay /> */}
-					<Header goTo={this.goTo} match={this.props.match} />
-					<Sidebar />
-					{React.cloneElement(this.props.children, this.props)}
-					{/* <SimpleSnackbar /> */}{" "}
-					{/*<Footer goTo={this.goTo} pathname={this.props.location.pathname}/>*/}
-			</MuiThemeProvider>
-		);
-	}
+	return (
+		<MuiThemeProvider theme={theme}>
+			<CssBaseline />
+			{/* <LoadingModal/> */}
+			{/* <ErrorDisplay /> */}
+			<Header goTo={goTo} match={props.match} />
+			<Sidebar />
+			{React.cloneElement(props.children, props)}
+			{/* <SimpleSnackbar /> */}{" "}
+			{/*<Footer goTo={this.goTo} pathname={this.props.location.pathname}/>*/}
+		</MuiThemeProvider>
+	);
 }
 
-// export default App;
 export default withStyles(styles)(App);
-// export default connect()(withStyles(styles)(App));
-// export default connect()(App);
