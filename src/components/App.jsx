@@ -2,21 +2,19 @@ import React from "react";
 import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import CssBaseline from '@material-ui/core/CssBaseline';
-
-import { amber, red } from "@material-ui/core/colors";
+import { red, grey } from "@material-ui/core/colors";
 
 import Header from "./Header/Header";
 import Sidebar from './Sidebar/Sidebar';
+import Content from './Content/Content';
 // import LoadingModal from "./LoadingModal";
 // import ErrorDisplay from './Error';
 
 // YouTube Colors
 // https://www.youtube.com/about/brand-resources/#logos-icons-colors
 
-// MUI Color Docs
-// https://material-ui-next.com/customization/themes/#palette
-// https://material-ui.com/style/color/
-// https://material-ui-next.com/style/color/
+// MUI Theming
+// https://material-ui.com/customization/theming/#palette
 
 const theme = createMuiTheme({
 	typography: {
@@ -26,7 +24,10 @@ const theme = createMuiTheme({
 		primary: {
 			main: '#c4302b',
 		  },
-		secondary: amber,
+		secondary: grey,
+		// {
+		// 	main: '#606060',
+		// },
 		error: red
 	},
 	root: {
@@ -34,25 +35,27 @@ const theme = createMuiTheme({
 	},
 	card: {
 		marginBottom: 8
-	}
+	},
 });
 
 const styles = theme => ({
-	// https://reactjs.org/docs/dom-elements.html#style
-  });
+	// 
+});
 
 const App = (props) => {
 	const goTo = (route) => {
 		props.history.push(`${route}`);
 	}
+	
 	return (
 		<MuiThemeProvider theme={theme}>
 			<CssBaseline />
 			{/* <LoadingModal/> */}
 			{/* <ErrorDisplay /> */}
 			<Header goTo={goTo} match={props.match} />
-			<Sidebar />
+			<Sidebar goTo={goTo} {...props} />
 			{React.cloneElement(props.children, props)}
+			
 			{/* <SimpleSnackbar /> */}{" "}
 			{/*<Footer goTo={this.goTo} pathname={this.props.location.pathname}/>*/}
 		</MuiThemeProvider>

@@ -2,7 +2,6 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { handleSignOut } from '../../actions/user';
 import { openCloseDrawer } from '../../actions/ui';
-
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -15,7 +14,6 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Grid from '@material-ui/core/Grid';
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -59,7 +57,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Header() {
+export default function Header(props) {
     const dispatch = useDispatch();
     const classes = useStyles();
     const user = useSelector(state => state.user);
@@ -89,15 +87,15 @@ export default function Header() {
         <Toolbar>
           <IconButton 
             edge="start" 
-            className={classes.menuButton} 
+            className={classes.menuButton}
             color="inherit" 
             aria-label="menu"
             onClick={handleDrawer}
           >
-            <MenuIcon />
+            <MenuIcon style={{color: '#909090'}} />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Youtube Uploader
+            <span onClick={e => props.goTo('/dashboard')} style={{cursor: 'pointer'}}>Youtube Uploader</span>
           </Typography>
             <div>
                 <img 
@@ -122,7 +120,6 @@ export default function Header() {
                 open={open}
                 onClose={handleClose}
               >
-                {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
                 <div style={{width: 300, padding: 16, boxSizing: 'border-box', borderBottom: '1px solid rgba(0, 0, 0, 0.1)'}}>
                   <Grid 
                     container
@@ -162,5 +159,3 @@ export default function Header() {
     </div>
   );
 }
-
-

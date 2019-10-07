@@ -7,6 +7,7 @@ import FullPageLoading from '../Dialogs/FullPageLoading';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Typography from '@material-ui/core/Typography';
+import { grey } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
@@ -46,6 +47,8 @@ export default (props) => {
   }
   const { from } = props.location.state || '/';
   console.log(props);
+  console.log('login page render');
+  console.log('login page says user is authorized???' + user.isAuthenticated);
   
   if(user.loading) {
     return (<FullPageLoading />);
@@ -94,7 +97,7 @@ export default (props) => {
                       </Typography>
                     </Grid>
                     <Grid item xs={2} sm={2} md={2} lg={2} xl={2} style={{textAlign: 'right'}}>
-                      <KeyboardArrowRight style={{ height: 48, fontSize: 48, color: '#909090', flex: 1}} />
+                      <KeyboardArrowRight style={{ height: 48, fontSize: 48, color: grey[600], flex: 1}} />
                     </Grid>
                   </Grid>
                 </Paper>
@@ -107,7 +110,7 @@ export default (props) => {
           container
         >
           <Grid item md={12} style={{textAlign: 'center'}}>
-              <Typography variant="subtitle2" style={{ fontSize: 10, fontWeight: 100, color: '#909090' }}><i>This is a blind, serverless application. No data is stored while using this demo other than anything sent directly to the Google or Youtube API. This is only an example of how to integrate the Google API.</i></Typography>
+              <Typography variant="subtitle2" style={{ fontSize: 10, fontWeight: 100, color: grey[600] }}><i>This is a blind, serverless application. No data is stored while using this demo other than anything sent directly to the Google or Youtube API. This is only an example of how to integrate the Google API.</i></Typography>
           </Grid>
         </Grid>
         

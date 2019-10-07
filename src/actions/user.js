@@ -62,7 +62,7 @@ export function updateSigninStatus() {
         await dispatch(initUser());
         dispatch({type: 'LOGIN_SUCCESS'});
     } else {
-      dispatch(handleSignOut());  
+      dispatch(handleSignOut());
     }
   }
 }

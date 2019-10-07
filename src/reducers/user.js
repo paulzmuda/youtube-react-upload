@@ -46,7 +46,7 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 ...state,
                 loading: true,
-                isAuthenticated: true,
+                isAuthenticated: false,
             });
 
         case 'LOGOUT_SUCCESS':

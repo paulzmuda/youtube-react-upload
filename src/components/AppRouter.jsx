@@ -7,13 +7,16 @@ import { loadGoogleApi } from '../utils/google-auth';
 import { updateSigninStatus } from '../actions/user';
 import App from './App';
 import Login from './Auth/Login';
-import Dashboard from './Dashboard/Dashboard';
-import Settings from './Settings/Settings';
+import Dashboard from './Content/Dashboard/Dashboard';
+import Videos from './Content/Videos/Videos';
+import Events from './Content/Events/Events';
+import Settings from './Content/Settings/Settings';
 import FullPageLoading from './Dialogs/FullPageLoading';
 
 const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
   <Route
     {...rest} render={props => (
+      console.log('authorized? ' + isAuthenticated),
       isAuthenticated ? (
           <App {...props}><Component {...props} /></App>
         ) : (
@@ -27,8 +30,9 @@ const AppRouter = () => {
     const [authReady, setAuthReady] = React.useState(false);
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
+    console.log(user);
 
-    // Do not render anything until we've loaded our Google API script externally (in the head of index.html)
+    // Don't render anything until we've loaded our Google API script externally (in the head of index.html)
     async function preloadGoogleApi() {
       await loadGoogleApi((status) => {
         setAuthReady(status);
@@ -49,7 +53,7 @@ const AppRouter = () => {
     return (
       <Router history={history}>
         <Switch>
-        <Route
+          <Route
             path="/" exact render={props => (
                 !user.isAuthenticated 
                 ? (
@@ -59,18 +63,19 @@ const AppRouter = () => {
                     )
                   )}
           />
-          <Route path="/login" exact render={props => (<Login {...props} />)} />
-          <Route
-            path="/login" render={props => (
+          <Route 
+            path="/login" exact render={props => (
+              console.log(user.isAuthenticated),
               !user.isAuthenticated
               ?
                 (<Login {...props} />)
               :
                 (<Redirect to="/dashboard" />)
-            )}
+            )} 
           />
-          
           <PrivateRoute exact path="/dashboard" component={Dashboard} isAuthenticated={user.isAuthenticated} />
+          <PrivateRoute exact path="/videos" component={Videos} isAuthenticated={user.isAuthenticated} />
+          <PrivateRoute exact path="/events" component={Events} isAuthenticated={user.isAuthenticated} />
           <PrivateRoute exact path="/settings" component={Settings} isAuthenticated={user.isAuthenticated} />
           
           {/* any unexpected route */}
