@@ -1,6 +1,7 @@
 import React from 'react';
+import { __RouterContext } from 'react-router-dom';
 import { useSelector } from 'react-redux'
-import {useTransition, useSpring, animated} from 'react-spring'
+import {useTransition, useSpring, animated} from 'react-spring';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
@@ -90,23 +91,11 @@ const useStyles = makeStyles((theme) =>
 );
 
 export default function Sidebar(props) {
+    const { location } = React.useContext(__RouterContext);
     const classes = useStyles();
     const avatar = useSelector(state => state.user.avatar);
     const open = useSelector(state => state.ui.drawerOpen);
     const [delayedClosed, setDelayedClosed] = React.useState(false);
-    const {useRef, useLayoutEffect} = React;
-    const firstUpdate = useRef(true);
-
-    useLayoutEffect(() => {
-      if (firstUpdate.current) {
-        firstUpdate.current = false;
-        return;
-      }
-
-      console.log("componentDidUpdateFunction");
-      console.log(firstUpdate);
-    });
-
 
     let avatarSpring = useSpring( // https://www.react-spring.io/docs/hooks/use-spring
       {
@@ -120,7 +109,7 @@ export default function Sidebar(props) {
           if(val.opacity < 0.2 && !open) {
             setDelayedClosed(false);
           }
-          if(val.opacity > 0.1 && open && !firstUpdate.current) {
+          if(val.opacity > 0.1 && open) { // need to check if this is the first page load
             setDelayedClosed(true);
           }
         },
@@ -142,7 +131,7 @@ export default function Sidebar(props) {
         icon: <DashboardIcon />,
         name: 'Dashboard',
         current: function() { 
-          return this.route === props.history.location.pathname;
+          return this.route === location.pathname;
         }
       },
       {
@@ -150,7 +139,7 @@ export default function Sidebar(props) {
         icon: <VideosIcon />,
         name: 'Videos',
         current: function() { 
-          return this.route === props.history.location.pathname;
+          return this.route === location.pathname;
         }
       },
       {
@@ -158,7 +147,7 @@ export default function Sidebar(props) {
         icon: <EventsIcon />,
         name: 'Events',
         current: function() { 
-          return this.route === props.history.location.pathname;
+          return this.route === location.pathname;
         }
       }
     ];
@@ -170,7 +159,7 @@ export default function Sidebar(props) {
         icon: <SettingsIcon />,
         name: 'Settings',
         current: function() { 
-          return this.route === props.history.location.pathname;
+          return this.route === location.pathname;
         }
       }
     ];
@@ -191,16 +180,15 @@ export default function Sidebar(props) {
         open={(delayedClosed)}
       >
         
-
-          <animated.div style={avatarSpring}>
-            <div className={classes.toolbar} />
-            <img src={avatar} className={classes.avatar} />
-          </animated.div>
-       
+        <animated.div style={avatarSpring}>
+          <div className={classes.toolbar} />
+          <img src={avatar} className={classes.avatar} />
+        </animated.div>
 
         <animated.div style={navigationSpring}>
         <div className={classes.toolbar} />
         {delayedClosed ? <Typography variant="subtitle2" style={{fontSize: 12, paddingLeft: 26, color: '#909090', fontWeight: 700}}>Channel</Typography> : null}
+
         <List>
           {
             nav1.map((item, i) => {

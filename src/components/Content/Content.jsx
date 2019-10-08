@@ -19,7 +19,13 @@ export default (props) => {
   const themeSpacing = mobile ? theme.spacing(7) + 1 : theme.spacing(9) + 1;
   const classes = useStyles();
   const ui = useSelector(state => state.ui);
-  let style = useSpring({left: ui.drawerOpen ? 240 : themeSpacing}); // https://www.react-spring.io/docs/hooks/use-spring
+  let style = useSpring(
+    {
+      config: { mass: 1.5, tension: 120, friction: 26 },
+      from: {left: ui.drawerOpen ? 240 : themeSpacing, opacity: 0},
+      to: {left: ui.drawerOpen ? 240 : themeSpacing, opacity: 1}
+    }
+  ); // https://www.react-spring.io/docs/hooks/use-spring
 
   return (
     <animated.div className={classes.pageContainer} style={style}>
@@ -27,3 +33,16 @@ export default (props) => {
     </animated.div>
   );
 }
+
+// import { useTransition, animated } from 'react-spring';
+
+// const location = props.location;
+// 	const transitions = useTransition(location, (location) => location.pathname, {
+// 		from: { opacity: 0 },
+// 		enter: { opacity: 1 },
+// 		leave: { opacity: 0 },
+//   });
+  
+// {transitions.map(({ item, style, key }) => (
+//   <animated.div key={key} style={style}></animated.div>
+// ))}

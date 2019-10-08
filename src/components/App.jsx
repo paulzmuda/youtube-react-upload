@@ -6,7 +6,7 @@ import { red, grey } from "@material-ui/core/colors";
 
 import Header from "./Header/Header";
 import Sidebar from './Sidebar/Sidebar';
-import Content from './Content/Content';
+
 // import LoadingModal from "./LoadingModal";
 // import ErrorDisplay from './Error';
 
@@ -54,6 +54,7 @@ const App = (props) => {
 			{/* <ErrorDisplay /> */}
 			<Header goTo={goTo} match={props.match} />
 			<Sidebar goTo={goTo} {...props} />
+	
 			{React.cloneElement(props.children, props)}
 			
 			{/* <SimpleSnackbar /> */}{" "}

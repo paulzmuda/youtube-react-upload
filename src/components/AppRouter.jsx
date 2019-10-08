@@ -13,6 +13,8 @@ import Events from './Content/Events/Events';
 import Settings from './Content/Settings/Settings';
 import FullPageLoading from './Dialogs/FullPageLoading';
 
+
+
 const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
   <Route
     {...rest} render={props => (
@@ -30,7 +32,6 @@ const AppRouter = () => {
     const [authReady, setAuthReady] = React.useState(false);
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
-    console.log(user);
 
     // Don't render anything until we've loaded our Google API script externally (in the head of index.html)
     async function preloadGoogleApi() {
