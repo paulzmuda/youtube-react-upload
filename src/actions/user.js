@@ -67,6 +67,7 @@ export function updateSigninStatus() {
   }
 }
 
+
 export function initUser() {
   return async (dispatch) => {
     try {

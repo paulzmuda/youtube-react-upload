@@ -47,8 +47,7 @@ export default (props) => {
   }
   const { from } = props.location.state || '/';
   console.log(props);
-  console.log('login page render');
-  console.log('login page says user is authorized???' + user.isAuthenticated);
+  console.log('Login: Render');
   
   if(user.loading) {
     return (<FullPageLoading />);
@@ -74,7 +73,7 @@ export default (props) => {
           spacing={0}
         >
           <Grid item
-            lg={4} md={6} sm={8} xs={12}
+            xl={3} lg={4} md={6} sm={8} xs={12}
           >
               <Paper 
                 className={classes.signInContainer} 
@@ -104,16 +103,12 @@ export default (props) => {
               </Grid>
         </Grid>
       </Grid> 
-
       <div style={{position: 'fixed', bottom: 0, width: '95vw', padding: 8}}>
-        <Grid
-          container
-        >
+        <Grid container>
           <Grid item md={12} style={{textAlign: 'center'}}>
-              <Typography variant="subtitle2" style={{ fontSize: 10, fontWeight: 100, color: grey[600] }}><i>This is a blind, serverless application. No data is stored while using this demo other than anything sent directly to the Google or Youtube API. This is only an example of how to integrate the Google API.</i></Typography>
+              <Typography variant="subtitle2" style={{ fontSize: 10, fontWeight: 100, color: grey[600] }}><i>This is a blind, serverless application. No data is stored while using this demo other than anything sent directly to the Google API. This is only an example of how to integrate the Google API.</i></Typography>
           </Grid>
         </Grid>
-        
       </div>
     </Grid>
   );

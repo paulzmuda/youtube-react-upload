@@ -3,7 +3,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { red, grey } from "@material-ui/core/colors";
-
 import Header from "./Header/Header";
 import Sidebar from './Sidebar/Sidebar';
 
@@ -25,10 +24,10 @@ const theme = createMuiTheme({
 			main: '#c4302b',
 		  },
 		secondary: grey,
-		// {
-		// 	main: '#606060',
-		// },
-		error: red
+		error: red,
+		background: {
+			default: '#F4F4F4'
+		}
 	},
 	root: {
 		display: 'flex',
@@ -38,11 +37,7 @@ const theme = createMuiTheme({
 	},
 });
 
-const styles = theme => ({
-	// 
-});
-
-const App = (props) => {
+export default (props) => {
 	const goTo = (route) => {
 		props.history.push(`${route}`);
 	}
@@ -54,13 +49,9 @@ const App = (props) => {
 			{/* <ErrorDisplay /> */}
 			<Header goTo={goTo} match={props.match} />
 			<Sidebar goTo={goTo} {...props} />
-	
 			{React.cloneElement(props.children, props)}
-			
 			{/* <SimpleSnackbar /> */}{" "}
 			{/*<Footer goTo={this.goTo} pathname={this.props.location.pathname}/>*/}
 		</MuiThemeProvider>
 	);
 }
-
-export default withStyles(styles)(App);

@@ -8,12 +8,12 @@ import { updateSigninStatus } from '../actions/user';
 import App from './App';
 import Login from './Auth/Login';
 import Dashboard from './Content/Dashboard/Dashboard';
+import YourChannel from './Content/YourChannel/YourChannel';
 import Videos from './Content/Videos/Videos';
 import Events from './Content/Events/Events';
 import Settings from './Content/Settings/Settings';
 import FullPageLoading from './Dialogs/FullPageLoading';
-
-
+import FatalError from './Dialogs/FatalError';
 
 const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
   <Route
@@ -30,25 +30,37 @@ const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
 
 const AppRouter = () => {
     const [authReady, setAuthReady] = React.useState(false);
+    const [authFatalError, setAuthFatalError] = React.useState(false);
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
 
-    // Don't render anything until we've loaded our Google API script externally (in the head of index.html)
-    async function preloadGoogleApi() {
-      await loadGoogleApi((status) => {
-        setAuthReady(status);
-        dispatch(updateSigninStatus()); 
-      });
+    // Don't render anything until we've loaded our Google API externally (found in the head of index.html)
+    const preloadGoogleApi = async () => {
+      try {
+        const apiStatus = await loadGoogleApi();
+        if(apiStatus) {
+          setAuthReady(apiStatus);
+          dispatch(updateSigninStatus()); 
+        }
+      } catch(e) {
+        console.log(e);
+        setAuthFatalError(true);
+      }        
     }
 
+    // componentDidMount
     React.useEffect(() => {
       preloadGoogleApi();
     },[]);
 
     console.log('AppRouter: Render');
 
-    if(!authReady) {
+    if(!authReady && !authFatalError) {
       return (<FullPageLoading />);
+    }
+
+    if(authFatalError) {
+      return (<FatalError />);
     }
     
     return (
@@ -75,6 +87,7 @@ const AppRouter = () => {
             )} 
           />
           <PrivateRoute exact path="/dashboard" component={Dashboard} isAuthenticated={user.isAuthenticated} />
+          <PrivateRoute exact path="/channel" component={YourChannel} isAuthenticated={user.isAuthenticated} />
           <PrivateRoute exact path="/videos" component={Videos} isAuthenticated={user.isAuthenticated} />
           <PrivateRoute exact path="/events" component={Events} isAuthenticated={user.isAuthenticated} />
           <PrivateRoute exact path="/settings" component={Settings} isAuthenticated={user.isAuthenticated} />

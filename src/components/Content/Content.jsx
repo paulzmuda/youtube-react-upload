@@ -8,9 +8,10 @@ const useStyles = makeStyles(theme => ({
     pageContainer: {
       position: 'absolute',
       top: theme.mixins.toolbar.minHeight,
-      width: '100vh',
-      height: '100vh',
+      // width: '100vw',
+      // height: '100vh',
     },
+    
 }));
 
 export default (props) => {
@@ -22,8 +23,8 @@ export default (props) => {
   let style = useSpring(
     {
       config: { mass: 1.5, tension: 120, friction: 26 },
-      from: {left: ui.drawerOpen ? 240 : themeSpacing, opacity: 0},
-      to: {left: ui.drawerOpen ? 240 : themeSpacing, opacity: 1}
+      from: {left: ui.drawerOpen ? 255 : themeSpacing, opacity: 0},
+      to: {left: ui.drawerOpen ? 255 : themeSpacing, opacity: 1}
     }
   ); // https://www.react-spring.io/docs/hooks/use-spring
 
@@ -33,16 +34,3 @@ export default (props) => {
     </animated.div>
   );
 }
-
-// import { useTransition, animated } from 'react-spring';
-
-// const location = props.location;
-// 	const transitions = useTransition(location, (location) => location.pathname, {
-// 		from: { opacity: 0 },
-// 		enter: { opacity: 1 },
-// 		leave: { opacity: 0 },
-//   });
-  
-// {transitions.map(({ item, style, key }) => (
-//   <animated.div key={key} style={style}></animated.div>
-// ))}
