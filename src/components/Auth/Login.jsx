@@ -46,7 +46,7 @@ export default (props) => {
       dispatch(handleSignIn());
   }
   const { from } = props.location.state || '/';
-  console.log(props);
+  // console.log(props);
   console.log('Login: Render');
   
   if(user.loading) {

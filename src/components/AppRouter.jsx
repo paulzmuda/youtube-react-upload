@@ -4,7 +4,7 @@ import history from '../history';
 import { Route, Router, Redirect, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadGoogleApi } from '../utils/google-auth';
-import { updateSigninStatus } from '../actions/user';
+import { listenAuth } from '../actions/user';
 import App from './App';
 import Login from './Auth/Login';
 import Dashboard from './Content/Dashboard/Dashboard';
@@ -40,7 +40,7 @@ const AppRouter = () => {
         const apiStatus = await loadGoogleApi();
         if(apiStatus) {
           setAuthReady(apiStatus);
-          dispatch(updateSigninStatus()); 
+          dispatch(listenAuth()); 
         }
       } catch(e) {
         console.log(e);
@@ -78,7 +78,7 @@ const AppRouter = () => {
           />
           <Route 
             path="/login" exact render={props => (
-              console.log(user.isAuthenticated),
+              // console.log(user.isAuthenticated),
               !user.isAuthenticated
               ?
                 (<Login {...props} />)

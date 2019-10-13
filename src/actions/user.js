@@ -1,4 +1,5 @@
-import { GoogleAuth, revokeAccess, signInWithGoogle, scopes } from '../utils/google-auth';
+import { GoogleAuth, revokeAccess, checkSigninStatus } from '../utils/google-auth';
+import store from '../store';
 // import { addAlert } from './alerts';
 
 function loginPending(creds) {
@@ -41,41 +42,41 @@ export function userLoading(loading) {
 
 export function handleSignIn() {
   return async (dispatch) => {
-    dispatch(loginPending());
-    GoogleAuth.signIn().then(()=>{
-      dispatch(updateSigninStatus()); // dispatch(handleReceivedUser());
-    }).catch((error)=>{
+    dispatch(loginPending());   
+    GoogleAuth.signIn().catch((error) => {
       dispatch(loginError(error)); // dispatch(handleNonUser());
     });
   };
 }
 
-
-//////////////////////////////////////////////////  MOVE THESE GOOGLE ACTIONS BACK TO GOOGLE-AUTH.JS
 export function updateSigninStatus() {
   return async (dispatch) => {
-    const user = GoogleAuth.currentUser.get();
-    const scopeCheck = user.hasGrantedScopes(scopes);
-    const signedIn = GoogleAuth.isSignedIn.get();
-    // GoogleAuth.isSignedIn.listen(this.props.dispatch(updateSigninStatus()));
-      if(scopeCheck && signedIn) {
-        await dispatch(initUser());
-        dispatch({type: 'LOGIN_SUCCESS'});
+    const isAuthorized = await checkSigninStatus();
+    if(isAuthorized) {
+      await dispatch(initUser()); // get user profile before proceeding
+      dispatch(loginSuccess());
     } else {
-      dispatch(handleSignOut());
+      dispatch(logoutSuccess());
+      // dispatch(handleSignOut());
     }
   }
 }
 
+export function listenAuth() {
+  return async (dispatch) => {
+     // need to run on first time page load incase already logged in
+    dispatch(updateSigninStatus());
+    // listen for changes to auth
+    GoogleAuth.isSignedIn.listen(() => { store.dispatch(updateSigninStatus()) });
+  }
+}
 
 export function initUser() {
   return async (dispatch) => {
     try {
       dispatch({type: 'USER_INIT_LOADING', loading: true});
-
       const GoogleUser = GoogleAuth.currentUser.get();
       const BasicProfile = GoogleUser.getBasicProfile();
-
       // https://developers.google.com/identity/sign-in/web/reference#googleusergetbasicprofile
       const userObject = {
         userId: BasicProfile.getId(),
@@ -84,12 +85,9 @@ export function initUser() {
         email: BasicProfile.getEmail(),
         avatar: BasicProfile.getImageUrl()
       }
-
       // user store
       dispatch({type: 'USER_INIT_SUCCESS', ...userObject});
       dispatch({type: 'LOGIN_MESSAGES_RESET'});
-      
-
     } 
     catch(e){ 
       dispatch(handleSignOut()); 
@@ -111,11 +109,12 @@ export function handleNonUser() {
 }
 
 // Logs the user out
-export function handleSignOut() { // HOW DO I INVALIDATE TOKEN AT AUTH0???
+export function handleSignOut() {
+  console.log('HANDLE SIGNOUT HIT')
   return (dispatch) => {
     dispatch(logoutPending()); // UI changes only
     return GoogleAuth.signOut().then(()=> {
-      dispatch(handleNonUser());      
+      dispatch(handleNonUser());
     }).catch((error) => {
       dispatch(handleNonUser());
       dispatch(loginError(error));
@@ -134,18 +133,18 @@ export function handleInvalidateAccess() {
   }
 }
 
-export function handleReceivedUser() {
-  return async (dispatch) => {
-    try {
-      // dispatch({type: 'USER_LOADING', loading: true});
-      await dispatch(initUser()); // get user info from Google
-      dispatch(loginSuccess());
-    }
-    catch (e) {
-      console.log(e);
-      dispatch(handleSignOut());
-      dispatch(loginError('There was a problem loading your information, please try signing in again.'));
-      throw e;
-    }
-  }
-}
+// export function handleReceivedUser() {
+//   return async (dispatch) => {
+//     try {
+//       // dispatch({type: 'USER_LOADING', loading: true});
+//       await dispatch(initUser()); // get user info from Google
+//       dispatch(loginSuccess());
+//     }
+//     catch (e) {
+//       console.log(e);
+//       dispatch(handleSignOut());
+//       dispatch(loginError('There was a problem loading your information, please try signing in again.'));
+//       throw e;
+//     }
+//   }
+// }

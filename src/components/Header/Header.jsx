@@ -95,7 +95,7 @@ export default function Header(props) {
             <MenuIcon style={{color: '#909090'}} />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            <span onClick={e => props.goTo('/dashboard')} style={{cursor: 'pointer'}}>Youtube Uploader</span>
+            <span onClick={e => props.goTo('/dashboard')} style={{cursor: 'pointer'}}>Youtube Channel Manager</span>
           </Typography>
             <div>
                 <img 
