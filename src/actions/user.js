@@ -2,9 +2,15 @@ import { GoogleAuth, revokeAccess, checkSigninStatus } from '../utils/google-aut
 import store from '../store';
 // import { addAlert } from './alerts';
 
-function loginPending(creds) {
+function authReady() {
   return {
-    type: 'LOGIN_REQUESTED_PENDING',
+    type: 'AUTH_READY',
+  };
+}
+
+function loginPending() {
+  return {
+    type: 'LOGIN_PENDING',
   };
 }
 
@@ -23,13 +29,13 @@ function loginError(message) {
 
 function logoutPending() {
   return {
-    type: 'LOGOUT_REQUESTED_PENDING',
+    type: 'LOGOUT_PENDING',
   };
 }
 
-export function logoutSuccess() {
+export function logoutComplete() {
   return {
-    type: 'LOGOUT_SUCCESS',
+    type: 'LOGOUT_COMPLETE',
   };
 }
 
@@ -44,7 +50,7 @@ export function handleSignIn() {
   return async (dispatch) => {
     dispatch(loginPending());   
     GoogleAuth.signIn().catch((error) => {
-      dispatch(loginError(error)); // dispatch(handleNonUser());
+      dispatch(loginError(error));
     });
   };
 }
@@ -56,16 +62,17 @@ export function updateSigninStatus() {
       await dispatch(initUser()); // get user profile before proceeding
       dispatch(loginSuccess());
     } else {
-      dispatch(logoutSuccess());
-      // dispatch(handleSignOut());
+      dispatch(logoutComplete());
     }
   }
 }
 
-export function listenAuth() {
+export function initAuth() {
   return async (dispatch) => {
-     // need to run on first time page load incase already logged in
-    dispatch(updateSigninStatus());
+    // need to run on first time page load incase already logged in
+    await dispatch(updateSigninStatus());
+    // flags AppRouter to continue
+    dispatch(authReady());
     // listen for changes to auth
     GoogleAuth.isSignedIn.listen(() => { store.dispatch(updateSigninStatus()) });
   }
@@ -101,22 +108,14 @@ export function initUser() {
   }
 }
 
-export function handleNonUser() {
-  return (dispatch) => {
-    // logout app reset cleanup here
-    dispatch(logoutSuccess());
-  }
-}
-
 // Logs the user out
 export function handleSignOut() {
-  console.log('HANDLE SIGNOUT HIT')
   return (dispatch) => {
-    dispatch(logoutPending()); // UI changes only
+    dispatch(logoutPending());
     return GoogleAuth.signOut().then(()=> {
-      dispatch(handleNonUser());
+      dispatch(logoutComplete());
     }).catch((error) => {
-      dispatch(handleNonUser());
+      dispatch(logoutComplete());
       dispatch(loginError(error));
     });
   };
@@ -127,24 +126,6 @@ export function handleInvalidateAccess() {
     // invalidation API call
     revokeAccess();
     // handle sign out
-    dispatch(handleNonUser());
-    // logout success with invalidation successful message?
-
+    dispatch(logoutComplete());
   }
 }
-
-// export function handleReceivedUser() {
-//   return async (dispatch) => {
-//     try {
-//       // dispatch({type: 'USER_LOADING', loading: true});
-//       await dispatch(initUser()); // get user info from Google
-//       dispatch(loginSuccess());
-//     }
-//     catch (e) {
-//       console.log(e);
-//       dispatch(handleSignOut());
-//       dispatch(loginError('There was a problem loading your information, please try signing in again.'));
-//       throw e;
-//     }
-//   }
-// }

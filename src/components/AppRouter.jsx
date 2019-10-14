@@ -4,7 +4,7 @@ import history from '../history';
 import { Route, Router, Redirect, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadGoogleApi } from '../utils/google-auth';
-import { listenAuth } from '../actions/user';
+import { initAuth } from '../actions/user';
 import App from './App';
 import Login from './Auth/Login';
 import Dashboard from './Content/Dashboard/Dashboard';
@@ -15,21 +15,26 @@ import Settings from './Content/Settings/Settings';
 import FullPageLoading from './Dialogs/FullPageLoading';
 import FatalError from './Dialogs/FatalError';
 
-const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
+const PrivateRoute = ({ component: Component, isAuthenticated, path, ...rest }) => (
   <Route
-    {...rest} render={props => (
-      console.log('authorized? ' + isAuthenticated),
+    path={path}
+    {...rest} 
+    render={props => (
       isAuthenticated ? (
-          <App {...props}><Component {...props} /></App>
-        ) : (
-          <Redirect to='/login' />
-        )
+        <App {...props}><Component {...props} /></App>
+      ) : (
+        <Redirect 
+          to={{
+            pathname: '/login',
+            state: path
+          }}
+        />
+      )
     )}
   />
 );
 
 const AppRouter = () => {
-    const [authReady, setAuthReady] = React.useState(false);
     const [authFatalError, setAuthFatalError] = React.useState(false);
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
@@ -39,8 +44,7 @@ const AppRouter = () => {
       try {
         const apiStatus = await loadGoogleApi();
         if(apiStatus) {
-          setAuthReady(apiStatus);
-          dispatch(listenAuth()); 
+          dispatch(initAuth());
         }
       } catch(e) {
         console.log(e);
@@ -55,7 +59,7 @@ const AppRouter = () => {
 
     console.log('AppRouter: Render');
 
-    if(!authReady && !authFatalError) {
+    if(!user.authReady && !authFatalError) {
       return (<FullPageLoading />);
     }
 
@@ -68,24 +72,40 @@ const AppRouter = () => {
         <Switch>
           <Route
             path="/" exact render={props => (
-                !user.isAuthenticated 
+              !user.isAuthenticated 
                 ? (
-                  <Redirect to="/login" />
+                  <Redirect 
+                    to={{
+                      pathname: '/login',
+                      state: null
+                    }}
+                  />
                 ) : (
-                  <Redirect to="/dashboard" />
-                    )
-                  )}
+                  <Redirect 
+                    to={{
+                      pathname: '/dashboard',
+                      state: null
+                    }}
+                  />
+                )
+            )}
           />
           <Route 
             path="/login" exact render={props => (
-              // console.log(user.isAuthenticated),
-              !user.isAuthenticated
-              ?
+              !user.isAuthenticated ?
                 (<Login {...props} />)
               :
-                (<Redirect to="/dashboard" />)
+               (
+                <Redirect 
+                  to={{
+                    pathname: (props.location.state || '/dashboard'),
+                    state: null
+                  }}
+                />
+               )
             )} 
           />
+
           <PrivateRoute exact path="/dashboard" component={Dashboard} isAuthenticated={user.isAuthenticated} />
           <PrivateRoute exact path="/channel" component={YourChannel} isAuthenticated={user.isAuthenticated} />
           <PrivateRoute exact path="/videos" component={Videos} isAuthenticated={user.isAuthenticated} />
@@ -95,13 +115,22 @@ const AppRouter = () => {
           {/* any unexpected route */}
           <Route
             render={() => (
-                !user.isAuthenticated 
-                ? (
-                  <Redirect to="/login" />
-                ) : (
-                  <Redirect to="/dashboard" />
-                    )
-                  )}
+              !user.isAuthenticated ? (
+                <Redirect 
+                  to={{
+                    pathname: '/login',
+                    state: null
+                  }}
+                />
+              ) : (
+                <Redirect 
+                  to={{
+                    pathname: '/dashboard',
+                    state: null
+                  }}
+                />
+              )
+            )}
           />
         </Switch>
       </Router>

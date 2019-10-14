@@ -1,4 +1,5 @@
 const initialState = {
+    authReady: false,
     loading: false,
     isAuthenticated: false,
     login: {
@@ -13,7 +14,13 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case 'LOGIN_REQUESTED_PENDING':
+        case 'AUTH_READY':
+            return Object.assign({}, state, {
+                ...state,
+                authReady: true,
+            });
+
+        case 'LOGIN_PENDING':
             return Object.assign({}, state, {
                 ...state,
                 loading: true,
@@ -42,18 +49,17 @@ export default (state = initialState, action) => {
                 }
             });
 
-        case 'LOGOUT_REQUESTED_PENDING':
+        case 'LOGOUT_PENDING':
             return Object.assign({}, state, {
                 ...state,
                 loading: true,
                 isAuthenticated: false,
             });
 
-        case 'LOGOUT_SUCCESS':
+        case 'LOGOUT_COMPLETE':
             return Object.assign({}, state, {
-                ...state,
-                loading: false,
-                isAuthenticated: false,
+                ...initialState, // reset all values except authReady
+                authReady: true,
             });
 
         case 'LOGIN_MESSAGES_RESET':

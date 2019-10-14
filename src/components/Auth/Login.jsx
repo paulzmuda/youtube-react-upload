@@ -1,6 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux'
-import { Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { handleSignIn } from '../../actions/user';
 import { makeStyles } from '@material-ui/core/styles';
 import FullPageLoading from '../Dialogs/FullPageLoading';
@@ -45,9 +44,6 @@ export default (props) => {
   const signIn = () => {
       dispatch(handleSignIn());
   }
-  const { from } = props.location.state || '/';
-  // console.log(props);
-  console.log('Login: Render');
   
   if(user.loading) {
     return (<FullPageLoading />);
@@ -59,9 +55,6 @@ export default (props) => {
       alignItems='stretch'
       className={classes.fullPageContainer}
     >
-      {
-          (user.isAuthenticated) && (<Redirect to={from || '/dashboard'}/>)
-      }
       <Grid item
         lg={12} md={12} sm={12} xs={12}
       >
