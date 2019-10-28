@@ -2,21 +2,58 @@ import React from 'react';
 import { __RouterContext } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import { useSpring, animated} from 'react-spring';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import MenuItems from './MenuItems';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import VideosIcon from '@material-ui/icons/VideoLibrary';
 import EventsIcon from '@material-ui/icons/Event';
 import SettingsIcon from '@material-ui/icons/Settings';
 
 const drawerWidth = 255;
+
+// define navigation above the grey line
+const nav1 = [
+  {
+    route: '/dashboard',
+    icon: <DashboardIcon />,
+    name: 'Dashboard',
+    current: function() { 
+      return this.route === location.pathname;
+    }
+  },
+  {
+    route: '/videos',
+    icon: <VideosIcon />,
+    name: 'Videos',
+    current: function() { 
+      return this.route === location.pathname;
+    }
+  },
+  {
+    route: '/events',
+    icon: <EventsIcon />,
+    name: 'Events',
+    current: function() { 
+      return this.route === location.pathname;
+    }
+  }
+];
+
+// define navigation below the grey line
+const nav2 = [
+  {
+    route: '/settings',
+    icon: <SettingsIcon />,
+    name: 'Settings',
+    current: function() { 
+      return this.route === location.pathname;
+    }
+  }
+];
 
 const useStyles = makeStyles((theme) => 
   createStyles({
@@ -68,30 +105,6 @@ const useStyles = makeStyles((theme) =>
     //     width: 76,
     //   },
     // },
-    listItem: {
-        // '&:hover span, &:hover svg': {
-        //     color: '#c4302b',
-        // },
-        height: 47
-    },
-    listItemIcon: {
-      paddingLeft: 0,
-      [theme.breakpoints.up('sm')]: {  
-        paddingLeft: 8,
-      },
-    },
-    primaryText: {
-        color: '#626363',
-        fontSize: 14,
-    },
-    activeItem: {
-      color: '#D90E19 !important',
-      
-    },
-    activeBackground: {
-      backgroundColor: 'rgba(0, 0, 0, 0.08)',
-      borderLeft: '4px solid #D90E19',
-    },
   }),
 );
 
@@ -102,7 +115,7 @@ export default function Sidebar(props) {
     const open = useSelector(state => state.ui.drawerOpen);
     const [delayedClosed, setDelayedClosed] = React.useState(false);
 
-    let avatarSpring = useSpring( // https://www.react-spring.io/docs/hooks/use-spring
+    const avatarSpring = useSpring( // https://www.react-spring.io/docs/hooks/use-spring
       {
         from: { textAlign: 'center', width: drawerWidth },
         to: { opacity: open ? 1 : 0, top: open ? 100 : 0 },
@@ -118,53 +131,13 @@ export default function Sidebar(props) {
       }
     );
 
-    let navigationSpring = useSpring(
+    const navigationSpring = useSpring(
       {
         from: { position: 'absolute', width: '100%', zIndex: 1000, top: 160 },
         to: { position: 'absolute', width: '100%', zIndex: 1000, top: (delayedClosed) ? 160 : 10 },
         config: { mass: 0.1, tension: 270, friction: 20 }
       }
     );
-
-    // define navigation above the grey line
-    const nav1 = [
-      {
-        route: '/dashboard',
-        icon: <DashboardIcon />,
-        name: 'Dashboard',
-        current: function() { 
-          return this.route === location.pathname;
-        }
-      },
-      {
-        route: '/videos',
-        icon: <VideosIcon />,
-        name: 'Videos',
-        current: function() { 
-          return this.route === location.pathname;
-        }
-      },
-      {
-        route: '/events',
-        icon: <EventsIcon />,
-        name: 'Events',
-        current: function() { 
-          return this.route === location.pathname;
-        }
-      }
-    ];
-
-    // define navigation below the grey line
-    const nav2 = [
-      {
-        route: '/settings',
-        icon: <SettingsIcon />,
-        name: 'Settings',
-        current: function() { 
-          return this.route === location.pathname;
-        }
-      }
-    ];
 
     return (
       <Drawer
@@ -180,8 +153,8 @@ export default function Sidebar(props) {
           }),
         }}
         open={(delayedClosed)}
-      >
-        
+      > 
+      
         <animated.div style={avatarSpring}>
           <div className={classes.toolbar} />
           <img src={avatar} className={classes.avatar} />
@@ -190,51 +163,11 @@ export default function Sidebar(props) {
         <animated.div style={navigationSpring}>
           <div className={classes.toolbar} />
           {delayedClosed ? <Typography variant="subtitle2" style={{fontSize: 12, paddingLeft: 26, color: '#909090', fontWeight: 700}}>Channel</Typography> : null}
-
-          <List>
-            {
-              nav1.map((item, i) => {
-                const current = item.current();
-                let listItem = classes.listItem;
-                let listItemIcon = classes.listItemIcon;
-                let primaryText = classes.primaryText;
-                if(current) {
-                  listItem = `${listItem} ${classes.activeBackground}`;
-                  listItemIcon = `${listItemIcon} ${classes.activeItem}`;
-                  primaryText = `${primaryText} ${classes.activeItem}`;
-                }
-                return (
-                  <ListItem button className={listItem} onClick={e => props.goTo(item.route)} key={1+i}>
-                    <ListItemIcon className={`${listItemIcon}`}>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.name} primaryTypographyProps={{variant: 'body2'}} classes={{primary: primaryText}} /> {/* https://material-ui.com/api/list-item/ */}
-                  </ListItem>
-                )
-              })
-            }
-          </List>
+          <MenuItems items={nav1} goTo={props.goTo} />
           <Divider />
-          <List>
-          {
-              nav2.map((item, i) => {
-                const current = item.current();
-                let listItem = classes.listItem;
-                let listItemIcon = classes.listItemIcon;
-                let primaryText = classes.primaryText;
-                if(current) {
-                  listItem = `${listItem} ${classes.activeBackground}`;
-                  listItemIcon = `${listItemIcon} ${classes.activeItem}`;
-                  primaryText = `${primaryText} ${classes.activeItem}`;
-                }
-                return (
-                  <ListItem button className={classes.listItem} onClick={e => props.goTo(item.route)} key={2+i}>
-                    <ListItemIcon className={`${listItemIcon}`}>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.name} primaryTypographyProps={{variant: 'body2'}} classes={{primary: primaryText}} /> {/* https://material-ui.com/api/list-item/ */}
-                  </ListItem>
-                )
-              })
-            }
-          </List>
+          <MenuItems items={nav2} goTo={props.goTo} />
         </animated.div>
+
       </Drawer>
     );
 }

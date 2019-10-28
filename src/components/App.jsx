@@ -1,11 +1,9 @@
 import React from "react";
-import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { red, grey } from "@material-ui/core/colors";
+import { red, blue } from "@material-ui/core/colors";
 import Header from "./Header/Header";
 import Sidebar from './Sidebar/Sidebar';
-
 // import LoadingModal from "./LoadingModal";
 // import ErrorDisplay from './Error';
 
@@ -18,12 +16,15 @@ import Sidebar from './Sidebar/Sidebar';
 const theme = createMuiTheme({
 	typography: {
 		useNextVariants: true,
+		fontFamily: 'YT Sans, Roboto, Arial, sans-serif',
 	},
 	palette: {
 		primary: {
 			main: '#c4302b',
 		  },
-		secondary: grey,
+		secondary: {
+			main: '#0761D4',
+		},
 		error: red,
 		background: {
 			default: '#F4F4F4'

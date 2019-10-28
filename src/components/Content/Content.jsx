@@ -6,10 +6,10 @@ import {useSpring, animated} from 'react-spring';
 
 const useStyles = makeStyles(theme => ({
     pageContainer: {
-      position: 'absolute',
-      top: theme.mixins.toolbar.minHeight,
-      // width: '100vw',
-      // height: '100vh',
+      // top: theme.mixins.toolbar.minHeight,
+      width: '100vw',
+      height: '100vh',
+      padding: '65px 0px 0px 255px',
     },
     
 }));
@@ -23,8 +23,8 @@ export default (props) => {
   let style = useSpring(
     {
       config: { mass: 1.5, tension: 120, friction: 26 },
-      from: {left: ui.drawerOpen ? 255 : themeSpacing, opacity: 0},
-      to: {left: ui.drawerOpen ? 255 : themeSpacing, opacity: 1}
+      from: {paddingLeft: ui.drawerOpen ? 255 : themeSpacing, opacity: 0},
+      to: {paddingLeft: ui.drawerOpen ? 255 : themeSpacing, opacity: 1}
     }
   ); // https://www.react-spring.io/docs/hooks/use-spring
 
