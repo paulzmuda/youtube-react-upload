@@ -1,4 +1,4 @@
-/* eslint-disable global-require */
+/* eslint-disable */
 
 if (module.hot || __DEV__) {
   module.exports = {

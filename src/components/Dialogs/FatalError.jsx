@@ -11,36 +11,56 @@ const useStyles = makeStyles({
   },
 });
 
-
 export default () => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <Grid container 
-        style={{position: "absolute", top: "0px", left: "0px", width: '100%', height: '100%'}}
-        justify='center'
-        alignItems='center'  
+      <Grid
+        container
+        style={{
+          position: 'absolute',
+          top: '0px',
+          left: '0px',
+          width: '100%',
+          height: '100%',
+        }}
+        justify="center"
+        alignItems="center"
       >
         <Grid item xs={12}>
-          <center>              
-            <Typography 
-                variant="h2" 
-                gutterBottom 
-                style={{ color: grey[300], paddingTop: 0, paddingBottom: 15, width: '100%', height: '100%', fontSize: 56 }}
+          <center>
+            <Typography
+              variant="h2"
+              gutterBottom
+              style={{
+                color: grey[300],
+                paddingTop: 0,
+                paddingBottom: 15,
+                width: '100%',
+                height: '100%',
+                fontSize: 56,
+              }}
             >
               Error
             </Typography>
-            <Typography 
-                variant="caption" 
-                gutterBottom 
-                style={{ color: grey[300], paddingTop: 0, width: '100%', height: '100%', fontSize: 18, fontWeight: 100 }}
+            <Typography
+              variant="caption"
+              gutterBottom
+              style={{
+                color: grey[300],
+                paddingTop: 0,
+                width: '100%',
+                height: '100%',
+                fontSize: 18,
+                fontWeight: 100,
+              }}
             >
               please try reloading the page
-            </Typography>                       
+            </Typography>
           </center>
         </Grid>
       </Grid>
     </div>
   );
-}
+};

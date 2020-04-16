@@ -8,8 +8,8 @@ import Content from '../Content';
 
 const useStyles = makeStyles({
   backgroundText: {
-    color: grey[300]
-  }
+    color: grey[300],
+  },
 });
 
 export default () => {
@@ -17,28 +17,26 @@ export default () => {
 
   return (
     <Content>
-      <Grid container
-        direction="row"
-      >
+      <Grid container direction="row">
         <Grid item xs={12}>
-            <Typography 
-                variant="overline" 
-                gutterBottom
-                className={classes.backgroundText}
-                style={{ fontSize: 18}}
-            >
-              Videos
-            </Typography>
-            <Typography
-                variant="h2" 
-                gutterBottom 
-                className={classes.backgroundText}
-                style={{ fontSize: 46}}
-            >
-              Blank Page
-            </Typography>   
+          <Typography
+            variant="overline"
+            gutterBottom
+            className={classes.backgroundText}
+            style={{ fontSize: 18 }}
+          >
+            Videos
+          </Typography>
+          <Typography
+            variant="h2"
+            gutterBottom
+            className={classes.backgroundText}
+            style={{ fontSize: 46 }}
+          >
+            Blank Page
+          </Typography>
         </Grid>
       </Grid>
     </Content>
   );
-}
+};

@@ -1,0 +1,79 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": ["airbnb", "plugin:react/recommended"],
+  "plugins": ["react", "css-modules", "@typescript-eslint"],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "warn",
+    "import/extensions": [
+      "error",
+      "always",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never",
+        "mjs": "never"
+      }
+    ],
+    "import/no-extraneous-dependencies": "off",
+    "no-console": [
+      "error",
+      {
+        "allow": ["warn", "error", "info"]
+      }
+    ],
+    "react/jsx-filename-extension": "off",
+    "no-param-reassign": [
+      2,
+      {
+        "props": false
+      }
+    ],
+    "react/prefer-stateless-function": "off",
+    "react/forbid-prop-types": [
+      "error",
+      {
+        "forbid": ["array", "object"]
+      }
+    ],
+    "linebreak-style": 0,
+    "max-len": [
+      "error",
+      121,
+      {
+        "ignoreUrls": true
+      },
+      {
+        "ignoreStrings": true
+      }
+    ],
+    "jsx-a11y/href-no-hash": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "17.x"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+  "ignorePatterns": [
+    "plopfile.js",
+    "/components",
+    "templates",
+    "*.d.ts",
+    "__tests__"
+  ]
+}

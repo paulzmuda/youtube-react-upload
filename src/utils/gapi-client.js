@@ -1,53 +1,54 @@
-
 export function loadApi() {
-  return async (dispatch) => {
+  return async dispatch => {
     window.gapi.load('client:auth2', _ => {
       dispatch(initClient());
     });
-  }
+  };
 }
 
 export function initClient() {
-  return async (dispatch) => {
-    window.gapi.client.init({
-      client_id: process.env.GOOGLE_CLIENT_ID,
-      fetch_basic_profile: false,
-      scope: 'profile'
-      // 'apiKey': 'YOUR_API_KEY',
-      // 'clientId': 'YOUR_CLIENT_ID',
-      // 'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly',
-      // 'discoveryDocs': ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
-    }).then(() => {
-      GoogleAuth = window.gapi.auth2.getAuthInstance();
-      GoogleAuth.isSignedIn.listen(dispatch(updateSigninStatus));
-      dispatch(setSigninStatus());
-      // document.getElementById('sign-in-or-out-button').addEventListener('click', () => {
-      //   this.handleAuthClick();
-      // });
-      // document.getElementById('revoke-access-button').addEventListener('click', () => {
-      //   this.revokeAccess();
-      // });
-    });
-  }
+  return async dispatch => {
+    window.gapi.client
+      .init({
+        client_id: process.env.GOOGLE_CLIENT_ID,
+        fetch_basic_profile: false,
+        scope: 'profile',
+        // 'apiKey': 'YOUR_API_KEY',
+        // 'clientId': 'YOUR_CLIENT_ID',
+        // 'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly',
+        // 'discoveryDocs': ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
+      })
+      .then(() => {
+        GoogleAuth = window.gapi.auth2.getAuthInstance();
+        GoogleAuth.isSignedIn.listen(dispatch(updateSigninStatus));
+        dispatch(setSigninStatus());
+        // document.getElementById('sign-in-or-out-button').addEventListener('click', () => {
+        //   this.handleAuthClick();
+        // });
+        // document.getElementById('revoke-access-button').addEventListener('click', () => {
+        //   this.revokeAccess();
+        // });
+      });
+  };
 }
 export function handleAuthClick() {
-  return async (dispatch) => {
+  return async dispatch => {
     if (GoogleAuth.isSignedIn.get()) {
       GoogleAuth.signOut();
     } else {
       GoogleAuth.signIn();
     }
-  }
+  };
 }
 export function revokeAccess() {
-  return async (dispatch) => {
+  return async dispatch => {
     GoogleAuth.disconnect();
-  }
+  };
 }
 export function updateSigninStatus() {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(setSigninStatus());
-  }
+  };
 }
 
 // export const initGapi = () => {
@@ -72,8 +73,6 @@ export function updateSigninStatus() {
 //     // 1. Load the JavaScript client library.
 //     // window.gapi.load('client', start);
 // }
-
-
 
 // class GoogleAuth {
 //   constructor() {
