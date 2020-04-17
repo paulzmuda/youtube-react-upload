@@ -45,13 +45,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default (props) => {
+const Dashboard = () => {
   const classes = useStyles();
   const emptyChannel = true;
 
+  // If using spacing property the negative margin throws off an x-axis scroll
+  // https://github.com/mui-org/material-ui/issues/7466
   return (
-    <Content props={props}>
-      <Grid container> {/* if using spacing property the negative margin throws off an x-axis scroll  https://github.com/mui-org/material-ui/issues/7466 */}
+    <Content>
+      <Grid container>
         <Grid item>
           <Typography variant="h1" className={classes.heading}>Channel dashboard</Typography>
         </Grid>
@@ -61,11 +63,12 @@ export default (props) => {
           {
             emptyChannel ? (
               <Grid container justify="center" className={classes.emptyChannel}>
-                <Grid item style={{textAlign: 'center', width: '100%'}}>
+                <Grid item style={{ textAlign: 'center', width: '100%' }}>
                   <img src="https://www.gstatic.com/youtube/img/creator/no_content_illustration_upload_video.svg" alt="" />
                   <Typography component="div" style={{paddingTop: 11, paddingBottom: 9, fontSize: 15, fontFamily: 'Roboto, Noto, sans-serif'}}>Ready to get your channel started?</Typography>
                   <Button variant="contained" color="secondary" className={classes.uploadButton}>
-                    Upload Video <ArrowDropDown />
+                    Upload Video
+                    <ArrowDropDown />
                   </Button>
                   <a
                     style={{
@@ -94,7 +97,7 @@ export default (props) => {
                       style={{
                         color: 'rgba(0,0,0,.55)',
                         verticalAlign: 'middle',
-                        marginRight: 4
+                        marginRight: 4,
                       }}
                     />
                     <Typography
@@ -116,3 +119,7 @@ export default (props) => {
     </Content>
   );
 };
+
+Dashboard.displayName = 'components/Content/Dashboard';
+
+export default Dashboard;

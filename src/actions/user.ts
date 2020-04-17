@@ -7,6 +7,7 @@ import {
   checkSigninStatus,
 } from '../utils/google-auth';
 
+
 function authReady() {
   return {
     type: 'AUTH_READY',
@@ -49,7 +50,7 @@ export function userLoading(loading: Boolean) {
 export function handleSignIn() {
   return async (dispatch: Dispatch) => {
     dispatch(loginLogoutPending());
-    return await GoogleAuth.signIn().catch((error: Error) => {
+    await GoogleAuth.signIn().catch((error: Error) => {
       dispatch(loginError(error.message));
     });
   };
@@ -58,7 +59,7 @@ export function handleSignIn() {
 export function handleSignOut() {
   return async (dispatch: Dispatch) => {
     dispatch(loginLogoutPending());
-    return await GoogleAuth.signOut()
+    await GoogleAuth.signOut()
       .then(() => {
         dispatch(logoutComplete());
       })

@@ -7,6 +7,7 @@ import store from './store';
 import { ErrorReporter, deepForceUpdate } from './utils/devtools';
 import AppRouter from './components/AppRouter';
 
+
 let renderWithContainer = (Component: React.FC<any>) => {
   render(
     <AppContainer>
@@ -25,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 if (process.env.NODE_ENV === 'development') {
   if (module.hot) {
     module.hot.accept('./components/AppRouter', () => {
-      const NextApp = require('./components/AppRouter').default;
+      const NextApp = require('./components/AppRouter').default; // eslint-disable-line global-require
       renderWithContainer(deepForceUpdate(NextApp));
     });
   }

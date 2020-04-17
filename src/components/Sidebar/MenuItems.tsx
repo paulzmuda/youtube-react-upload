@@ -1,12 +1,13 @@
 import React from 'react';
-import { MenuItem } from './';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import { MenuItem } from '.';
 
-const useStyles = makeStyles((theme) =>
+
+const useStyles = makeStyles((theme) => (
   createStyles({
     listItem: {
       height: 47,
@@ -30,53 +31,57 @@ const useStyles = makeStyles((theme) =>
       paddingLeft: 12,
     },
   })
-);
+));
 
 interface Props {
   items: MenuItem[]
   goTo: Function
-  currentPath: String
+  currentPath: string
 }
 
-export default function MenuItems({
+const MenuItems = ({
   items,
   goTo,
   currentPath,
-}: Props) {
+}: Props) => {
   const classes = useStyles();
   return (
     <List>
       {
-        items.map((item, i) => {
+        items.map((item) => {
           const current = item.current(item.route, currentPath);
-          let listItem = classes.listItem;
-          let listItemIcon = classes.listItemIcon;
-          let primaryText = classes.primaryText;
+          let { listItem, listItemIcon, primaryText } = classes;
+
           if (current) {
             listItem = `${listItem} ${classes.activeBackground}`;
             listItemIcon = `${listItemIcon} ${classes.activeItem}`;
             primaryText = `${primaryText} ${classes.activeItem}`;
           }
+
           return (
-            <ListItem // https://material-ui.com/api/list-item/
-              button
-              className={listItem}
-              onClick={(e) => goTo(item.route)}
-              key={1 + i}
-            >
-              <ListItemIcon className={`${listItemIcon}`}>
-                <item.icon />
-              </ListItemIcon>
-              <ListItemText
-                primary={item.name}
-                primaryTypographyProps={{ variant: 'body2' }}
-                classes={{ primary: primaryText }}
-              />{' '}
-              
-            </ListItem>
+            <React.Fragment key={item.route.toString()}>
+              <ListItem
+                button
+                className={listItem}
+                onClick={() => goTo(item.route)}
+              >
+                <ListItemIcon className={`${listItemIcon}`}>
+                  <item.icon />
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.name}
+                  primaryTypographyProps={{ variant: 'body2' }}
+                  classes={{ primary: primaryText }}
+                />
+              </ListItem>
+            </React.Fragment>
           );
         })
       }
     </List>
   );
-}
+};
+
+MenuItems.displayName = 'components/Sidebar/MenuItems';
+
+export default MenuItems;

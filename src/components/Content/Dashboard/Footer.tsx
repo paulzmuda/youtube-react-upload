@@ -8,9 +8,13 @@ const useStyles = makeStyles((theme) => ({
   //
 }));
 
-export default (props) => {
+const Footer = () => {
   const classes = useStyles();
   return (
     <div>footer content</div>
   );
 };
+
+Footer.displayName = 'components/Content/Dashboard/Footer';
+
+export default Footer;

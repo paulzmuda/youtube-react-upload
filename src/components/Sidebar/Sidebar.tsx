@@ -1,21 +1,22 @@
 import React from 'react';
-import { Store } from '../../store';
 import { useSelector } from 'react-redux';
-import { useSpring, animated } from 'react-spring';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { useSpring, animated } from 'react-spring';
+import { Store } from '../../store';
 import {
   nav,
   subNav,
-} from './';
+} from '.';
 import MenuItems from './MenuItems';
+
 
 const drawerWidth = 255;
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles((theme) => (
   createStyles({
     root: {
       display: 'flex',
@@ -54,61 +55,57 @@ const useStyles = makeStyles((theme) =>
       height: 144,
       width: 144,
     },
-    // avatarFull: {
-
-    // },
-    // avatarShrink: {
-    //   height: 64,
-    //   width: 64,
-    //   [theme.breakpoints.up('sm')]: {
-    //     height: 76,
-    //     width: 76,
-    //   },
-    // },
   })
-);
+));
 
 interface Props {
   goTo: Function
   currentPath: string
 }
 
-export default function Sidebar({
+const Sidebar = ({
   goTo,
   currentPath,
-}: Props) {
+}: Props) => {
   const classes = useStyles();
-  const avatar = useSelector(({ user }: Store) => user.avatar);
+  const userData = useSelector(({ user }: Store) => user);
   const open = useSelector(({ ui }: Store) => ui.drawerOpen);
   const [delayedClosed, setDelayedClosed] = React.useState(false);
 
   // https://www.react-spring.io/docs/hooks/use-spring
-  const avatarSpring = useSpring<any>(
-    {
-      from: { textAlign: 'center', width: drawerWidth },
-      to: { opacity: open ? 1 : 0, top: open ? 100 : 0 },
-      onFrame: (val: any) => {
-        if (val.opacity < 0.2 && !open) {
-          setDelayedClosed(false);
-        }
-        if (val.opacity > 0.1 && open) {
-          // need to check if this is the first page load
-          setDelayedClosed(true);
-        }
-      },
-      config: { mass: 1, tension: 270, friction: 26 },
-    }
-  );
+  const avatarSpring = useSpring<any>({
+    from: { textAlign: 'center', width: drawerWidth },
+    to: { opacity: open ? 1 : 0, top: open ? 100 : 0 },
+    onFrame: (val: any) => {
+      if (val.opacity < 0.2 && !open) {
+        setDelayedClosed(false);
+      }
+      if (val.opacity > 0.1 && open) {
+        // need to check if this is the first page load
+        setDelayedClosed(true);
+      }
+    },
+    config: { mass: 1, tension: 270, friction: 26 },
+  });
 
   const navigationSpring = useSpring({
-    from: { position: 'absolute', width: '100%', zIndex: 1000, top: 160 },
+    from: {
+      position: 'absolute',
+      width: '100%',
+      zIndex: 1000,
+      top: 160,
+    },
     to: {
       position: 'absolute',
       width: '100%',
       zIndex: 1000,
       top: delayedClosed ? 160 : 10,
     },
-    config: { mass: 0.1, tension: 270, friction: 20 },
+    config: {
+      mass: 0.1,
+      tension: 270,
+      friction: 20,
+    },
   });
 
   return (
@@ -128,7 +125,11 @@ export default function Sidebar({
     >
       <animated.div style={avatarSpring}>
         <div className={classes.toolbar} />
-        <img src={avatar} className={classes.avatar} />
+        <img
+          src={userData.avatar}
+          className={classes.avatar}
+          alt={`${userData.firstName} ${userData.lastName}`}
+        />
       </animated.div>
 
       <animated.div style={navigationSpring}>
@@ -154,4 +155,8 @@ export default function Sidebar({
       </animated.div>
     </Drawer>
   );
-}
+};
+
+Sidebar.displayName = 'components/Sidebar/Sidebar';
+
+export default Sidebar;

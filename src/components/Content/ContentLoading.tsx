@@ -5,6 +5,7 @@ import { grey } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
@@ -20,7 +21,7 @@ const YoutubeLinearProgress = withStyles({
   },
 })(LinearProgress);
 
-export default () => {
+const ContentLoading = () => {
   const classes = useStyles();
 
   return (
@@ -39,38 +40,40 @@ export default () => {
         alignItems="center"
       >
         <Grid item xs={12}>
-          <center>
-            <Typography
-              variant="h2"
-              gutterBottom
-              style={{
-                color: grey[300],
-                paddingTop: 0,
-                paddingBottom: 15,
-                width: '100%',
-                height: '100%',
-                fontSize: 56,
-              }}
-            >
-              Loading
-            </Typography>
-            <Typography
-              variant="caption"
-              gutterBottom
-              style={{
-                color: grey[300],
-                paddingTop: 0,
-                width: '100%',
-                height: '100%',
-                fontSize: 18,
-                fontWeight: 100,
-              }}
-            >
-              please wait
-            </Typography>
-          </center>
+          <Typography
+            variant="h2"
+            gutterBottom
+            style={{
+              color: grey[300],
+              paddingTop: 0,
+              paddingBottom: 15,
+              width: '100%',
+              height: '100%',
+              fontSize: 56,
+            }}
+          >
+            Loading
+          </Typography>
+          <Typography
+            variant="caption"
+            gutterBottom
+            style={{
+              color: grey[300],
+              paddingTop: 0,
+              width: '100%',
+              height: '100%',
+              fontSize: 18,
+              fontWeight: 100,
+            }}
+          >
+            Please wait
+          </Typography>
         </Grid>
       </Grid>
     </div>
   );
 };
+
+ContentLoading.displayName = 'components/Content/ContentLoading';
+
+export default ContentLoading;

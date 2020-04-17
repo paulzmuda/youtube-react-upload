@@ -1,9 +1,11 @@
 import React from 'react';
-import { Store } from '../../store';
+import { useSelector } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useSelector } from 'react-redux';
 import { useSpring, animated } from 'react-spring';
+import { Store } from '../../store';
+import ContentLoading from './ContentLoading';
+
 
 const useStyles = makeStyles((theme) => ({
   pageContainer: {
@@ -16,26 +18,29 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
-  children: React.ReactElement<any>
+  children: React.ReactNode
 }
 
-export default (props: Props) => {
+const Content = ({ children }: Props) => {
   const theme = useTheme();
-  const mobile = !useMediaQuery(theme.breakpoints.up('sm')); // https://material-ui.com/components/use-media-query/
+  const mobile = !useMediaQuery(theme.breakpoints.up('sm'));
   const themeSpacing = mobile ? theme.spacing(7) + 1 : theme.spacing(9) + 1;
   const classes = useStyles();
-  const ui = useSelector(({ ui }: Store) => ui);
-  
-  // https://www.react-spring.io/docs/hooks/use-spring
+  const uiData = useSelector(({ ui }: Store) => ui);
+
   const style = useSpring({
     config: { mass: 1.5, tension: 120, friction: 26 },
-    from: { paddingLeft: ui.drawerOpen ? 255 : themeSpacing, opacity: 0 },
-    to: { paddingLeft: ui.drawerOpen ? 255 : themeSpacing, opacity: 1 },
+    from: { paddingLeft: uiData.drawerOpen ? 255 : themeSpacing, opacity: 0 },
+    to: { paddingLeft: uiData.drawerOpen ? 255 : themeSpacing, opacity: 1 },
   });
 
   return (
     <animated.div className={classes.pageContainer} style={style}>
-      {props.children}
+      { children }
     </animated.div>
   );
 };
+
+Content.displayName = 'components/Content/Content';
+
+export default Content;

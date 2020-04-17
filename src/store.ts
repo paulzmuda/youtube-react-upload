@@ -5,9 +5,10 @@ import rootReducer from './reducers/index';
 import { User as UserState } from './reducers/user';
 import { UI as UIState } from './reducers/ui';
 
+
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(thunk))
+  composeWithDevTools(applyMiddleware(thunk)),
 );
 
 export interface Store {

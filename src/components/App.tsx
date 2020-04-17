@@ -28,21 +28,14 @@ const theme = createMuiTheme({
       default: '#F4F4F4',
     },
   },
-  // root: {
-  //   display: 'flex',
-  // },
-  // card: {
-  //   marginBottom: 8,
-  // },
 });
 
 interface Props extends RouteComponentProps {
   children: React.ReactElement<any>
 }
 
-export default ({
+const App = ({
   history,
-  match,
   location,
   children,
 }: Props) => {
@@ -53,9 +46,13 @@ export default ({
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
-      <Header goTo={goTo} match={match} />
+      <Header goTo={goTo} />
       <Sidebar goTo={goTo} currentPath={location.pathname} />
       { children }
     </MuiThemeProvider>
   );
 };
+
+App.displayName = 'components/App';
+
+export default App;

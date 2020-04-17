@@ -12,15 +12,14 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Grid from '@material-ui/core/Grid';
+import { Store } from '../../store';
 import { handleSignOut } from '../../actions/user';
 import { openCloseDrawer } from '../../actions/ui';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
@@ -28,6 +27,12 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     boxShadow: '0px 1px 4px 1px rgba(0,0,0,0.1)',
+  },
+  avatarWrapper: {
+    '&:focus': {
+      outline: '1px solid rgba(0, 0, 0, 0.1)',
+      borderRadius: '5px',
+    },
   },
   headerAvatar: {
     height: 32,
@@ -49,39 +54,58 @@ const useStyles = makeStyles((theme) => ({
   innerMenuUserName: {
     fontSize: 16,
   },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
   menuIcon: {
     paddingRight: 16,
     fontSize: 40,
     color: '#909090',
     transform: 'rotate(0.03deg)',
   },
+  menu: {
+    width: 300,
+    padding: 16,
+    boxSizing: 'border-box',
+    borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+  },
 }));
 
-export default function Header(props) {
+type Props = {
+  goTo: (path: string) => void
+}
+
+const Header = ({
+  goTo,
+}: Props) => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const user = useSelector((state) => state.user);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const userData = useSelector(({ user }: Store) => user);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const handleDrawer = () => {
     dispatch(openCloseDrawer());
   };
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleMenuClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleMenuKey = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const navigate = (path) => {
-    props.goTo(path);
+  const navigate = (path: string) => {
+    goTo(path);
     handleClose();
   };
 
-  const navHref = (path) => {
+  const navHref = (path: string) => {
     window.open(path, '_blank');
     handleClose();
   };
@@ -106,20 +130,31 @@ export default function Header(props) {
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             <span
-              onClick={(e) => props.goTo('/dashboard')}
+              onClick={() => goTo('/dashboard')}
+              onKeyPress={() => goTo('/dashboard')}
+              tabIndex={0}
+              role="button"
               style={{ cursor: 'pointer' }}
             >
               Youtube Channel Manager
             </span>
           </Typography>
           <div>
-            <img
-              src={user.avatar}
-              onClick={handleMenu}
+            <span
+              onClick={handleMenuClick}
+              onKeyPress={handleMenuKey}
+              role="button"
+              tabIndex={0}
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              className={classes.headerAvatar}
-            />
+              className={classes.avatarWrapper}
+            >
+              <img
+                src={userData.avatar}
+                className={classes.headerAvatar}
+                alt={`${userData.firstName} ${userData.lastName}`}
+              />
+            </span>
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}
@@ -135,14 +170,7 @@ export default function Header(props) {
               open={open}
               onClose={handleClose}
             >
-              <div
-                style={{
-                  width: 300,
-                  padding: 16,
-                  boxSizing: 'border-box',
-                  borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
-                }}
-              >
+              <div className={classes.menu}>
                 <Grid
                   container
                   direction="row"
@@ -151,8 +179,9 @@ export default function Header(props) {
                 >
                   <Grid item>
                     <img
-                      src={user.avatar}
+                      src={userData.avatar}
                       className={classes.innerMenuAvatar}
+                      alt={`${userData.firstName} ${userData.lastName}`}
                     />
                   </Grid>
                   <Grid item>
@@ -160,19 +189,19 @@ export default function Header(props) {
                       variant="h6"
                       className={classes.innerMenuUserName}
                     >
-                      {user.firstName} {user.lastName}
+                      {`${userData.firstName} ${userData.lastName}`}
                     </Typography>
                   </Grid>
                 </Grid>
               </div>
 
-              <MenuItem onClick={(e) => navigate('/channel')}>
+              <MenuItem onClick={() => navigate('/channel')}>
                 <SvgIcon className={classes.menuIcon}>
                   <path d="M3 5v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.11 0-2 .9-2 2zm12 4c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3zm-9 8c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1H6v-1z" />
                 </SvgIcon>
                 <Typography variant="body2">Your channel</Typography>
               </MenuItem>
-              <MenuItem onClick={(e) => navHref('http://www.youtube.com')}>
+              <MenuItem onClick={() => navHref('http://www.youtube.com')}>
                 <Youtube className={classes.menuIcon} />
                 <Typography variant="body2">YouTube</Typography>
               </MenuItem>
@@ -186,4 +215,8 @@ export default function Header(props) {
       </AppBar>
     </div>
   );
-}
+};
+
+Header.displayName = 'components/Header/Header';
+
+export default Header;
