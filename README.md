@@ -1,4 +1,7 @@
 ## YouTube Client Resembling YouTube Channel Manager
+
+![Screen Shot 2021-03-12 at 12 37 42 AM](https://user-images.githubusercontent.com/4179018/110902285-3ab75f00-82cb-11eb-9d4a-8245a221d931.png)
+
 Client-only Youtube content management, this is a Work in Progress that never gets enough time to get done. Originally started as a basic jQuery/Dropzone client, was converted to React, then designed to look like the new Channel Manager, then convert(ing) to TypeScript.
 
 In a past experience, all examples I could find of the Google YouTube API were server-side supporting languages like PHP, Java, C#.  It didnt make sense to me that one would upload videos to their own server before sending it to Google's servers, so I wanted to eliminate that bottleneck.  Especially helpful when uploading large video files.
