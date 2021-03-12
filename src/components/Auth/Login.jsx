@@ -99,7 +99,7 @@ export default (props) => {
       <div style={{position: 'fixed', bottom: 0, width: '95vw', padding: 8}}>
         <Grid container>
           <Grid item md={12} style={{textAlign: 'center'}}>
-              <Typography variant="subtitle2" style={{ fontSize: 10, fontWeight: 100, color: grey[600] }}><i>This is a blind, serverless application. No data is stored while using this demo other than anything sent directly to the Google API. This is only an example of how to integrate the Google API.</i></Typography>
+              <Typography variant="subtitle2" style={{ fontSize: 10, fontWeight: 100, color: grey[600] }}><i>This is a blind, stateless application. No data is stored while using this demo other than anything sent directly to the Google API. This is only an example of how to integrate the Google API.</i></Typography>
           </Grid>
         </Grid>
       </div>
